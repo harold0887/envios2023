@@ -10,8 +10,8 @@ use Livewire\Component;
 use App\Models\Shipment;
 use App\Models\Membership;
 use Livewire\WithFileUploads;
-use App\Http\Helpers\AddLicense;
 use App\Models\PackageAsProduct;
+use App\Http\Controllers\AddLicense;
 
 class CartRender extends Component
 {

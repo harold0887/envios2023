@@ -8,8 +8,9 @@ use App\Models\Package;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Shipment;
-use App\Http\Helpers\AddLicense;
+
 use App\Models\PackageAsProduct;
+use App\Http\Controllers\AddLicense;
 use setasign\Fpdi\Fpdi; // Like this
 use Illuminate\Support\Facades\Request;
 

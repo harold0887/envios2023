@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Helpers;
+namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
@@ -11,7 +11,6 @@ use setasign\Fpdi\Fpdi; // Like this
 
 class AddLicense
 {
-
     public  $order, $product, $licencia, $message;
 
 

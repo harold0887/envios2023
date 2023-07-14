@@ -218,8 +218,8 @@
               <div class="card-icon">
                 <i class="material-icons">weekend</i>
               </div>
-              <p class="card-category">Bookings</p>
-              <h3 class="card-title">184</h3>
+              <p class="card-category">Ventas del día</p>
+              <h3 class="card-title"> ${{$salesDay}} </h3>
             </div>
             <div class="card-footer">
               <div class="stats">

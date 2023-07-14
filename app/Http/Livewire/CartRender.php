@@ -17,7 +17,8 @@ class CartRender extends Component
 {
     use WithFileUploads;
     public $payment;
-    public $productSend;
+    public $productSend, $membershipSend;
+
     public $name, $email, $socialNetwork, $fop;
 
     public $lastOrder;
@@ -96,7 +97,6 @@ class CartRender extends Component
             foreach (\Cart::getContent() as $item) {
 
                 if ($item->associatedModel->codeSend == 'Product') {
-                    $this->count++;
                     $this->productSend = Product::find($item->id);
                     array_push($enviados, '<br>' . $this->productSend->title); //llenar el array con un procudto
 
@@ -124,7 +124,6 @@ class CartRender extends Component
                 }
 
                 if ($item->associatedModel->codeSend == 'Package') {
-
                     $packageSend = Package::find($item->id);
                     //guardar detalle de venta
                     Shipment::create([
@@ -136,7 +135,7 @@ class CartRender extends Component
 
 
                     foreach ($packageSend->products as $product) {
-                        $this->count++;
+
                         $this->productSend = Product::find($product->id);
                         array_push($enviados, '<br>' . $this->productSend->title); //agregar los produecto del paquete al array
 
@@ -158,14 +157,20 @@ class CartRender extends Component
                 }
                 if ($item->associatedModel->codeSend == 'Membership') {
 
-                    array_push($enviados, '<br>' . $this->membershipUpdate->title); //agregar solo informacion
 
+                    $this->membershipSend = Membership::find($item->id);
+
+
+
+
+                    //guardar detalle de venta
                     Shipment::create([
                         'idMembership' => $item->id,
                         'folio' => $this->folio,
-                        'id_order' => $this->lastOrder->id,
+                        'id_order' => $newOrder->id,
                         'price' => $item->price,
                     ]);
+                    array_push($enviados, '<br>' . $this->membershipSend->title); //agregar solo informacion
                 }
             };
             if ($this->count == 1) {

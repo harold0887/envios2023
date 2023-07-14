@@ -38,11 +38,7 @@
             <i class="material-icons">home</i>Inicio
           </a>
         </li>
-        <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
-          <a href="{{ route('dashboard') }}" class="nav-link text-primary">
-            <i class="material-icons">dashboard</i> dashboard
-          </a>
-        </li>
+        
         <li class="nav-item{{ $activePage == 'presupuesto' ? ' active' : '' }}">
           <a href="{{ route('presupuesto') }}" class="nav-link text-primary">
             <i class="material-icons">savings</i> Presupuesto
@@ -69,15 +65,12 @@
             </i> Membresias
           </a>
         </li>
-
-        <li class="nav-item{{ $activePage == 'cart' ? ' active' : '' }}">
-          <a href="{{ route('cart.index') }}" class="nav-link text-primary" style="position: relative;">
-            <i class="material-icons">shopping_cart</i>
-            <span class="badge rounded-pill badge-notification" style="position: absolute; top:0; left:25px">
-              <livewire:cart-count />
-            </span>
+        <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
+          <a href="{{ route('dashboard') }}" class="nav-link text-primary">
+            <i class="material-icons">dashboard</i> dashboard
           </a>
         </li>
+        
         <li class="nav-item dropdown">
           <a class="nav-link text-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">logout</i>
@@ -95,6 +88,14 @@
                                       this.closest('form').submit();">Salir</a>
             </form>
           </div>
+        </li>
+        <li class="nav-item{{ $activePage == 'cart' ? ' active' : '' }}">
+          <a href="{{ route('cart.index') }}" class="nav-link text-primary" style="position: relative;">
+            <i class="material-icons">shopping_cart</i>Carrito
+            <span class="badge rounded-pill badge-notification" style="position: absolute; top:0; left:25px">
+              <livewire:cart-count />
+            </span>
+          </a>
         </li>
         @endauth
       </ul>

@@ -24,7 +24,7 @@
 
                         <!-- Card body -->
                         <div id="collapse30" class="collapse show" role="tabpanel" aria-labelledby="heading30" data-parent="#accordionEx5">
-                            <div class="card-body rgba-black-light white-text z-depth-1">
+                            <div class="card-body rgba-black-light white-text z-depth-1  px-1">
                                 <div class="form-row align-items-center">
                                     @foreach ($products as $product)
                                     <div class="col-4 col-md-2 p-1">
@@ -34,18 +34,18 @@
                                                     <img class="w-100 rounded" src="{{ Storage::url($product->itemMain) }} ">
                                                 </div>
                                             </div>
-                                            <div class="row px-2">
-                                                <div class="col-12 col-lg-6 text-center">
-                                                    <p class="item-price text-muted p-0 ">$ {{ $product->price }}
+                                            <div class="row px-3 justify-content-between">
+                                                <div class="col-auto p-0     text-center ">
+                                                    <p class="item-price text-muted p-0 m-0">$ {{ $product->price }}
                                                         <a class="btn btn-success btn-link p-0 " href="{{ route('products.edit', $product->id) }}" target="_blank">
                                                             <i class="material-icons">edit</i>
                                                         </a>
                                                     </p>
                                                 </div>
-                                                <div class="col-12 col-lg-6 text-end">
+                                                <div class="col-auto  p-0    text-end ">
                                                     @if(!\Cart::get($product->id))
-                                                    <button class=" btn btn-primary btn-fab btn-fab-mini btn-round" wire:click="addCart('{{ $product->id }}','{{ $product->codeSend }}')">
-                                                        <i class="material-icons">shopping_cart</i>
+                                                    <button class=" btn btn-primary btn-fab btn-fab-mini btn-round  " wire:click="addCart('{{ $product->id }}','{{ $product->codeSend }}')">
+                                                        <i class="material-icons ">shopping_cart</i>
                                                     </button>
                                                     @else
                                                     <a href="{{ route('cart.index') }}" class="btn btn-primary btn-round py-1 px-3">

@@ -4,7 +4,7 @@
         <div class="row ">
             <div class="col-12">
                 <div class="card ">
-                    <div class="card-header card-header-primary card-header-icon">
+                    <div class="card-header card-header-primary card-header-icon ">
                         <div class="card-icon">
                             <i class="material-icons">receipt</i>
                         </div>
@@ -19,16 +19,16 @@
                                 <br>
                                 <span class="text-muted">Contacto: <b>{{ $order->socialNetwork }}</b></span>
                                 <br>
+                                <span class="text-muted">Fecha: <b>{{ date_format($order->created_at, 'd-M-Y H:i') }}</b></span>
+                                <br>
                                 <span class="text-muted">Total: <b>{{ $order->amount }} MXN</b></span>
 
-                                <p class="text-secondary"> </p>
-                                <p class="text-secondary"></p>
                             </div>
 
                         </div>
                     </div>
                     <div class="card-body row ">
-                        <div class="col-12 col-lg-9 ">
+                        <div class="col-12 col-lg-9">
                             <div class="row">
                                 <!-- Content -->
                                 <div class="rgba-black-strong ">

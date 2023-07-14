@@ -12,13 +12,13 @@ class MembershipList extends Component
     public $membresias;
     protected $listeners = [
         'udateData' => 'udateData',
-        'updateAgenda' => 'updateAgenda',
-        'updateTarjet', 'updateTarjet',
+
+
         'sendNotification' => 'sendNotification'
     ];
 
 
-    public $membershipSelect = '', $search = '', $shipments = '';
+    public $membershipSelect = '', $search = '', $shipments = '', $sinRegistro = '';
 
     public $url, $nameMembership, $numberDocument = '';
     protected $rules = [
@@ -28,11 +28,15 @@ class MembershipList extends Component
     {
         $this->membresias = Membership::where('status', true)
             ->get();
+    }
+    public function render()
+    {
+
 
         $this->shipments = Shipment::join('orders', 'shipments.id_order', 'orders.id')
             ->orderBy('shipments.created_at', 'desc')
+            ->select('shipments.*', 'orders.folio', 'orders.socialNetwork', 'orders.email')
             ->where('idMembership', $this->membershipSelect)
-            ->select('shipments.*', 'orders.folio')
             ->where(function ($query) {
                 $query
                     ->where('orders.folio', 'like', '%' . $this->search . '%')
@@ -40,34 +44,22 @@ class MembershipList extends Component
                     ->orWhere('orders.socialNetwork', 'like', '%' . $this->search . '%');
             })
             ->get();
-    }
-    public function render()
-    {
-        if ($this->membershipSelect != '') {
-            $this->reset(['shipments']);
-            $this->shipments = Shipment::join('orders', 'shipments.id_order', 'orders.id')
-                ->orderBy('shipments.created_at', 'desc')
-                ->select('shipments.*', 'orders.folio', 'orders.socialNetwork', 'orders.email')
-                ->where('idMembership', $this->membershipSelect)
-                ->where(function ($query) {
-                    $query
-                        ->where('orders.folio', 'like', '%' . $this->search . '%')
-                        ->orWhere('orders.email', 'like', '%' . $this->search . '%')
-                        ->orWhere('orders.socialNetwork', 'like', '%' . $this->search . '%');
-                })
-                ->get();
-        }
 
-        switch ($this->membershipSelect) {
-            case '2004':
-                $this->url = "https://www.facebook.com/groups/658785861928629/";
-                $this->nameMembership = "PREESCOLAR VIP MACA 2022-2023";
-                break;
+        $this->sinRegistro = Shipment::join('orders', 'shipments.id_order', 'orders.id')
+            ->orderBy('shipments.created_at', 'desc')
+            ->select('shipments.*', 'orders.folio', 'orders.socialNetwork', 'orders.email')
+            ->where('idMembership', $this->membershipSelect)
+            ->where('shipments.tarjeta', 1)
+            ->where(function ($query) {
+                $query
+                    ->where('orders.folio', 'like', '%' . $this->search . '%')
+                    ->orWhere('orders.email', 'like', '%' . $this->search . '%')
+                    ->orWhere('orders.socialNetwork', 'like', '%' . $this->search . '%');
+            })
+            ->get();
 
-            default:
-                # code...
-                break;
-        }
+
+
         return view('livewire.membership-list')
             ->extends('layouts.app', [
                 'class' => 'off-canvas-sidebar',
@@ -119,11 +111,14 @@ class MembershipList extends Component
     public function updateTarjet($id)
     {
         try {
-            Shipment::findOrFail($id)->update([
-                'tarjeta' => 1
+            $venta = Shipment::findOrFail($id);
+            $status = $venta->tarjeta;
+
+            $venta->update([
+                'tarjeta' => $status == 0 ? true : false
             ]);
             $this->emit('success-auto-close', [
-                'message' => 'La entrega de la tarjeta fue actualizada con éxito',
+                'message' => 'El registro web fue actualizado con éxito',
             ]);
         } catch (QueryException $e) {
             $this->emit('error', [

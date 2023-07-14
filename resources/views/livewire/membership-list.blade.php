@@ -40,7 +40,8 @@
                 </div>
             </div>
             <div class="col-12">
-                <small class="text-primary">{{ $shipments->count() }} resultados obtenidos</small>
+                <small class="text-primary">{{ $shipments->count() }} resultados obtenidos</small> -
+                <small class="text-muted">{{ $sinRegistro->count() }} registrados en web</small>
             </div>
             @endif
         </div>
@@ -49,18 +50,7 @@
         @if(isset($shipments) && $shipments->count() > 0)
         <div class="row mt-3">
 
-            <!-- <div class="col-12 ml-3 col-lg-3">
-                <div class="input-group rounded mt-2">
-                    <input class="form-control rounded" placeholder="Ingrese el Número del material" wire:model='numberDocument' />
-                </div>
-                @error('numberDocument')
-                <small class=" text-danger"> {{ $message }} </small>
-                @enderror
-            </div>
-            <div class="col-12 col-lg-3">
-                <button class="w-100 btn btn-primary" {{$numberDocument==''? 'disabled' : ''}} wire:click="confirmNotification()">Enviar notificacion
-                </button>
-            </div> -->
+
         </div>
         <div class="row  mt-3 border rounded mx-1 shadow">
 
@@ -73,7 +63,7 @@
                                 <th><b>Fecha venta</b></th>
                                 <th><b>email</b></th>
                                 <th><b>Red social</b></th>
-                                <th><b>Tarjeta</b></th>
+                                <th><b>Web</b></th>
                                 <th><b>Agenda</b></th>
                                 <th><b>Nota</b></th>
                                 <th><b>Acciones</b></th>
@@ -81,7 +71,7 @@
                         </thead>
                         <tbody class="h5 ">
                             @foreach ($shipments as $shipment)
-                            <tr class="{{ $shipment->agenda == 0 ? 'table-danger ' : '' }}  {{ $shipment->tarjeta == 0 ? 'table-danger ' : '' }}">
+                            <tr class="  {{ $shipment->tarjeta == 0 ? 'table-danger ' : '' }}">
 
 
                                 <td>{{ $shipment->folio }}</td>
@@ -92,7 +82,7 @@
                                 <td>
                                     <div class="togglebutton">
                                         <label>
-                                            <input onclick="confirmUpdateTarjet('{{ $shipment->id }}','{{ $shipment->folio }}')" type="checkbox" {{ $shipment->tarjeta == 1 ? 'checked ' : '' }} name="tarjeta">
+                                            <input wire:click="updateTarjet({{ $shipment->id }})" type="checkbox" {{ $shipment->tarjeta == 1 ? 'checked ' : '' }} name="tarjeta">
                                             <span class="toggle"></span>
                                         </label>
                                     </div>
@@ -101,7 +91,7 @@
                                 <td>
                                     <div class="togglebutton">
                                         <label>
-                                            <input onclick="confirmUpdateAgenda('{{ $shipment->id }}','{{ $shipment->folio }}')" type="checkbox" {{ $shipment->agenda == 1 ? 'checked ' : '' }} name="agenda">
+                                            <input wire:click="updateAgenda({{ $shipment->id }})" type="checkbox" {{ $shipment->agenda == 1 ? 'checked ' : '' }} name="agenda">
                                             <span class="toggle"></span>
                                         </label>
                                     </div>

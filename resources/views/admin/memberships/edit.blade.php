@@ -1,0 +1,92 @@
+@extends('layouts.app',[
+'title'=>'Membresias',
+'navbarClass'=>'navbar-transparent',
+'activePage'=>'memberships',
+])
+@section('content')
+<div class="content pt-0">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header card-header-primary card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">card_membership</i>
+                        </div>
+                        <h4 class="card-title">Editar - {{ $membership->title }}  </h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="edit-membership" action="{{ route('memberships.update', $membership->id) }}" enctype="multipart/form-data" method="POST">
+                        @csrf @method('PATCH')
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="title">Editar - {{ $membership->title }}</label>
+                                    <input type="text" class="form-control" name="title" value="{{ old('title')?:$membership->title }}">
+                                    @error('title')
+                                    <small class="text-danger"> {{ $message }} </small>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="price">Precio publico</label>
+                                    <input type="number" class="form-control" name="price" value="{{ old('price')?:$membership->price }}" step="0.01">
+                                    @error('price')
+                                    <small class="text-danger"> {{ $message }} </small>
+                                    @enderror
+                                </div>
+
+
+                            </div>
+
+
+
+
+
+                            <div class="form-row">
+                                <div class="col-12 col-md-6 col-lg-3 text-center">
+                                    <h4 class="title">Imagen principal</h4>
+                                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                                        <div class="fileinput-new thumbnail">
+                                            @if (Storage::exists($membership->itemMain))
+                                            <img src="{{ Storage::url($membership->itemMain)  }}" alt="...">
+                                            @else
+                                            <img src="{{ asset('material') }}/img/image_placeholder.jpg" alt="...">
+                                            <h6 class="m-2">No existe una portada para esta membresia.</h6>
+                                            @endif
+                                        </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                                        <div>
+                                            <span class="btn btn-rose btn-round btn-file">
+                                                <span class="fileinput-new">Selecciona La portada</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="itemMain" accept="image/*" />
+                                            </span>
+                                            <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Eliminar</a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        @error('itemMain')
+                                        <small class=" text-danger"> {{ $message }} </small>
+                                        @enderror
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button type="reset" class="btn">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+@endsection
+@include('includes.alert-error')

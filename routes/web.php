@@ -3,9 +3,10 @@
 use App\Http\Livewire\Balance;
 use App\Http\Livewire\CartRender;
 use App\Http\Livewire\Presupuesto;
-use App\Http\Livewire\MembershipList;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Livewire\MembershipList;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EgresosController;
 use App\Http\Controllers\ProfileController;
@@ -28,7 +29,10 @@ use App\Http\Controllers\AdminMembershipController;
 */
 
 
-
+Route::get('/foo', function () {
+  Artisan::call('storage:link');
+   echo "Link done";
+});
 
 
 Auth::routes();

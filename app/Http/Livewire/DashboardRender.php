@@ -10,7 +10,7 @@ use Livewire\WithPagination;
 class DashboardRender extends Component
 {
     use WithPagination;
-    public  $salesDay, $salesMonth;
+    public  $salesDay, $salesMonth, $salesYear;
     public $search = '';
     public $sortDirection = 'desc';
     public $sortField = 'created_at';
@@ -27,13 +27,13 @@ class DashboardRender extends Component
         $this->salesDay = Order::whereBetween('created_at', [$day . " 00:00:01", $day . " 23:59:59"])
             ->sum('amount');
 
-
-
         $this->salesMonth = Order::whereMonth('created_at', $month)
             ->where(function ($query) {
                 $query->whereYear('created_at', '=', date("Y"));
             })
             ->sum('amount');
+
+        $this->salesYear = Order::whereYear('created_at', date("Y"))->sum('amount');
     }
 
 

@@ -21,8 +21,8 @@
                 <i class="material-icons">receipt</i>
               </div>
               <div class="row">
-                <div class="col-12 col-md-6 px-0">
-                  <h4 class="card-title font-weight-bold">Ventas.</h4>
+                <div class="col-12 col-md-6">
+                  <h4 class="card-title font-weight-bold">Registro de Ventas</h4>
                 </div>
               </div>
             </div>
@@ -380,7 +380,7 @@
                 <i class="material-icons">equalizer</i>
               </div>
               <p class="card-category">Ventas del día</p>
-              <h3 class="card-title"> ${{$salesDay}} </h3>
+              <h3 class="card-title"> ${{ number_format($salesDay,2) }} </h3>
             </div>
             <div class="card-footer">
               <div class="stats">
@@ -397,7 +397,7 @@
               <i class="fa-solid fa-chart-pie"></i>
               </div>
               <p class="card-category">Ventas del mes</p>
-              <h3 class="card-title">${{$salesMonth}} </h3>
+              <h3 class="card-title">${{ number_format($salesMonth,2) }} </h3>
             </div>
             <div class="card-footer">
               <div class="stats">
@@ -413,7 +413,7 @@
                 <i class="fa-sharp fa-solid fa-calendar-days"></i>
               </div>
               <p class="card-category">Ventas del año</p>
-              <h3 class="card-title">$34,245</h3>
+              <h3 class="card-title">${{ number_format($salesYear,2) }} </h3>
             </div>
             <div class="card-footer">
               <div class="stats">

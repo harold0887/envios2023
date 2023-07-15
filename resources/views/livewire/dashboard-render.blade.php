@@ -1,7 +1,7 @@
 <div class="content">
   <div class="content">
     <div class="container-fluid">
-        <div class="row">
+      <!-- <div class="row">
             <div class="col-12">
                 @foreach($products as $product)
 
@@ -11,9 +11,163 @@
 
                 @endforeach
             </div>
-        </div>
+        </div> -->
       <div class="row">
-        <div class="col-md-12">
+
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header card-header-primary card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">receipt</i>
+              </div>
+              <div class="row">
+                <div class="col-12 col-md-6 px-0">
+                  <h4 class="card-title font-weight-bold">Ventas.</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body row">
+              <div class="col-12">
+                @if ($search != '')
+                <div class="d-flex mt-2">
+                  <span class="text-base">Borrar filtros </span>
+                  <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="clearSearch()">close</i>
+                </div>
+                @endif
+              </div>
+              <div class="col-10 col-md-8 pr-0">
+                <form class="form-group">
+                  <div class="input-group rounded">
+                    <input id="input-search" type="search" class="form-control px-3" placeholder="Buscar por orden, email, etc..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                  </div>
+                </form>
+              </div>
+              <div class="col-2 col-lg-1 p-0">
+                <button type="submit" class="btn bg-transparent   btn-round btn-just-icon p-0" style="border:solid 1px #c09aed">
+                  <i class="material-icons " style="color:#c09aed">search</i>
+                </button>
+              </div>
+
+              @if ($search != '')
+              <div class="col-12">
+
+                <small class="text-primary">{{ $orders->count() }} resultados obtenidos</small>
+
+
+              </div>
+              @if (isset($orders) && $orders->count() > 0)
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="cursor:pointer" wire:click="setSort('id')">
+                        @if($sortField=='id')
+                        @if($sortDirection=='asc')
+                        <i class="fa-solid fa-arrow-down-a-z"></i>
+                        @else
+                        <i class="fa-solid fa-arrow-up-z-a"></i>
+                        @endif
+                        @else
+                        <i class="fa-solid fa-sort mr-1"></i>
+                        @endif
+
+                        Id
+                      </th>
+
+                      <th style="cursor:pointer" wire:click="setSort('created_at')">
+                        @if($sortField=='created_at')
+                        @if($sortDirection=='asc')
+                        <i class="fa-solid fa-arrow-down-a-z"></i>
+                        @else
+                        <i class="fa-solid fa-arrow-up-z-a"></i>
+                        @endif
+                        @else
+                        <i class="fa-solid fa-sort mr-1"></i>
+                        @endif
+                        Fecha
+                      </th>
+                      <th style="cursor:pointer" wire:click="setSort('amount')">
+                        @if($sortField=='amount')
+                        @if($sortDirection=='asc')
+                        <i class="fa-solid fa-arrow-down-a-z"></i>
+                        @else
+                        <i class="fa-solid fa-arrow-up-z-a"></i>
+                        @endif
+                        @else
+                        <i class="fa-solid fa-sort mr-1"></i>
+                        @endif
+                        Cantidad
+                      </th>
+                      <th style="cursor:pointer" wire:click="setSort('socialNetwork')">
+                        @if($sortField=='socialNetwork')
+                        @if($sortDirection=='asc')
+                        <i class="fa-solid fa-arrow-down-a-z"></i>
+                        @else
+                        <i class="fa-solid fa-arrow-up-z-a"></i>
+                        @endif
+                        @else
+                        <i class="fa-solid fa-sort mr-1"></i>
+                        @endif
+                        Red Social
+                      </th>
+                      <th style="cursor:pointer" wire:click="setSort('email')">
+                        @if($sortField=='email')
+                        @if($sortDirection=='asc')
+                        <i class="fa-solid fa-arrow-down-a-z"></i>
+                        @else
+                        <i class="fa-solid fa-arrow-up-z-a"></i>
+                        @endif
+                        @else
+                        <i class="fa-solid fa-sort mr-1"></i>
+                        @endif
+                        Email
+                      </th>
+
+
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ($orders as $order)
+                    <tr>
+                      <td>{{ $order->folio }}</td>
+
+                      <td>{{date_format($order->created_at, 'd-M-Y H:i')}}</td>
+                      <td>{{ $order->amount }}</td>
+                      <td>{{ $order->socialNetwork }}</td>
+                      <td>{{ $order->email }}</td>
+
+
+                      <td class="td-actions">
+                        <a class="btn btn-info btn-link" href="{{ route('sales.show', $order->id) }}">
+                          <i class=" material-icons">visibility</i>
+                        </a>
+                        <a class="btn btn-success btn-link " href="{{ route('sales.edit', $order->id) }}">
+                          <i class="material-icons">edit</i>
+                        </a>
+
+                        <a class="btn btn-success btn-link text-danger " wire:click="deleteOrder({{ $order->id }})">
+                          <i class="material-icons ">close</i>
+                        </a>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-12">
+                {{ $orders->links() }}
+              </div>
+              @else
+              <div class="col-12">
+                <p class="alert alert-warning">⚠️ ¡Ooooups! No se encontraron resultados.</p>
+              </div>
+              @endif
+              @endif
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-12">
           <div class="card ">
             <div class="card-header card-header-success card-header-icon">
               <div class="card-icon">
@@ -121,12 +275,15 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <!-- <button type="button" class="btn btn-round btn-default dropdown-toggle btn-link" data-toggle="dropdown">
   7 days
   </button> -->
-      <div class="row">
+
+
+
+      <!-- <div class="row">
         <div class="col-md-4">
           <div class="card card-chart">
             <div class="card-header card-header-rose" data-header-animation="true">
@@ -210,13 +367,17 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
+
+
+
       <div class="row">
         <div class="col-lg-3 col-md-6 col-sm-6">
           <div class="card card-stats">
             <div class="card-header card-header-warning card-header-icon">
               <div class="card-icon">
-                <i class="material-icons">weekend</i>
+
+                <i class="material-icons">equalizer</i>
               </div>
               <p class="card-category">Ventas del día</p>
               <h3 class="card-title"> ${{$salesDay}} </h3>
@@ -233,10 +394,10 @@
           <div class="card card-stats">
             <div class="card-header card-header-rose card-header-icon">
               <div class="card-icon">
-                <i class="material-icons">equalizer</i>
+              <i class="fa-solid fa-chart-pie"></i>
               </div>
-              <p class="card-category">Website Visits</p>
-              <h3 class="card-title">75.521</h3>
+              <p class="card-category">Ventas del mes</p>
+              <h3 class="card-title">${{$salesMonth}} </h3>
             </div>
             <div class="card-footer">
               <div class="stats">
@@ -249,9 +410,9 @@
           <div class="card card-stats">
             <div class="card-header card-header-success card-header-icon">
               <div class="card-icon">
-                <i class="material-icons">store</i>
+                <i class="fa-sharp fa-solid fa-calendar-days"></i>
               </div>
-              <p class="card-category">Revenue</p>
+              <p class="card-category">Ventas del año</p>
               <h3 class="card-title">$34,245</h3>
             </div>
             <div class="card-footer">

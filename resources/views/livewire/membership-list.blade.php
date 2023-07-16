@@ -103,8 +103,6 @@
                                     <button class="btn btn-info btn-link text-success " onclick="udateData('{{ $shipment->id }}','{{ $shipment->folio }}','nota{{ $shipment->id }}')">
                                         <i class=" material-icons ">save</i>
                                     </button>
-
-
                                 </td>
 
                             </tr>

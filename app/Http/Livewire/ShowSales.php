@@ -12,13 +12,18 @@ use App\Models\Shipment;
 use App\Models\PackageAsProduct;
 use App\Http\Controllers\AddLicense;
 use setasign\Fpdi\Fpdi; // Like this
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Request;
 
 class ShowSales extends Component
 {
     public $patch, $ids, $order, $idPackage, $count = 0;
 
-    protected $listeners = ['resend' => 'resend'];
+    protected $listeners = [
+        'resend' => 'resend',
+        'udateData1' => 'udateData1',
+    ];
+
 
 
     public function mount()
@@ -48,10 +53,10 @@ class ShowSales extends Component
             ->join('orders', 'shipments.id_order', '=', 'orders.id')
             ->where('shipments.id_order', $this->ids)
             ->orderBy('packages.title')
-            ->select('packages.id','packages.codeSend','packages.itemMain','packages.price','packages.title')
+            ->select('packages.id', 'packages.codeSend', 'packages.itemMain', 'packages.price', 'packages.title')
             ->get();
 
-           
+
 
         $memberships = Shipment::join('orders', 'shipments.id_order', '=', 'orders.id')
             ->join('memberships', 'shipments.idMembership', '=', 'memberships.id')
@@ -62,11 +67,15 @@ class ShowSales extends Component
                 'memberships.itemMain',
                 'shipments.price',
                 'memberships.title',
+                'shipments.agenda',
+                'shipments.nota',
+                'shipments.tarjeta',
+                'shipments.id as idOrder'
             )->get();
 
         $productsPackagesOrder = PackageAsProduct::join('products', 'package_product.product_id', 'products.id')
             ->where('package_product.package_id', $this->idPackage)
-            ->select('products.title', 'products.id', 'products.itemMain', 'products.price','products.status')
+            ->select('products.title', 'products.id', 'products.itemMain', 'products.price', 'products.status')
             ->orderBy('title')
             ->get();
 
@@ -126,8 +135,8 @@ class ShowSales extends Component
 
                 $productsIcluded = Package::findOrFail($id);
 
-                
-              
+
+
 
                 foreach ($productsIcluded->products as $product) {
                     $this->count++;
@@ -189,6 +198,61 @@ class ShowSales extends Component
         } catch (\Throwable $th) {
             $this->emit('error', [
                 'message' => 'error al descargar el documento - ' . $th->getMessage(),
+            ]);
+        }
+    }
+    public function updateAgenda1($id)
+    {
+        try {
+            $venta = Shipment::findOrFail($id);
+            $status = $venta->agenda;
+
+            $venta->update([
+                'agenda' => $status == 0 ? true : false
+            ]);
+            $this->emit('success-auto-close', [
+                'message' => 'La entrega de la agenda fue actualizada con éxito',
+            ]);
+        } catch (QueryException $e) {
+            $this->emit('error', [
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function updateTarjet1($id)
+    {
+       
+        try {
+            $venta = Shipment::findOrFail($id);
+
+            $status = $venta->tarjeta;
+
+            $venta->update([
+                'tarjeta' => $status == 0 ? true : false
+            ]);
+            $this->emit('success-auto-close', [
+                'message' => 'El registro web fue actualizado con éxito',
+            ]);
+        } catch (QueryException $e) {
+            $this->emit('error', [
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+    public function udateData1($id,  $nota)
+    {
+        
+        try {
+            Shipment::findOrFail($id)->update([
+                'nota' => $nota
+            ]);
+            $this->emit('success-auto-close', [
+                'message' => 'La membresia fue actualizada con éxito',
+            ]);
+        } catch (\Throwable $e) {
+            $this->emit('error', [
+                'message' => 'Error al actualizar la membresia - ' . $e->getMessage(),
             ]);
         }
     }

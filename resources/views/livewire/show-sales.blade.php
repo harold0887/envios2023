@@ -47,15 +47,11 @@
                                                             <i class="fa-solid fa-book fa-2x p-3 mr-4 float-left black-text"></i>
                                                             <h4 class="text-uppercase white-text mb-0 py-3 mt-1 ">
                                                                 Cuadernillos ({{$purchases->count()}})
-
-
-
                                                             </h4>
                                                         </a>
                                                     </div>
-
                                                     <!-- Card body -->
-                                                    <div id="collapse30" class="collapse show" role="tabpanel" aria-labelledby="heading30" data-parent="#accordionEx5">
+                                                    <div id="collapse30" class="collapse {{$purchases->count() > 0 ?'show':''}}  " role="tabpanel" aria-labelledby="heading30" data-parent="#accordionEx5">
                                                         <div class="card-body rgba-black-light white-text z-depth-1">
                                                             @if (isset($purchases) && $purchases->count() > 0)
 
@@ -146,7 +142,7 @@
                                                     </div>
 
                                                     <!-- Card body -->
-                                                    <div id="collapse31" class="collapse" role="tabpanel" aria-labelledby="heading31" data-parent="#accordionEx5">
+                                                    <div id="collapse31" class="collapse {{$packages->count() > 0 ?'show':''}}" role="tabpanel" aria-labelledby="heading31" data-parent="#accordionEx5">
                                                         <div class="card-body rgba-black-light white-text z-depth-1">
                                                             @if(isset($packages) && $packages->count() > 0)
                                                             @foreach($packages as $package)
@@ -208,10 +204,12 @@
                                                     </div>
 
                                                     <!-- Card body -->
-                                                    <div id="collapse32" class="collapse" role="tabpanel" aria-labelledby="heading32" data-parent="#accordionEx5">
+                                                    <div id="collapse32" class="collapse {{$memberships->count() > 0 ?'show':''}}" role="tabpanel" aria-labelledby="heading32" data-parent="#accordionEx5">
                                                         <div class="card-body rgba-black-light white-text z-depth-1">
                                                             @if(isset($memberships) && $memberships->count() > 0)
                                                             @foreach($memberships as $membership)
+
+
                                                             <div class="row pt-2">
                                                                 <div class="col-md-3 my-1">
                                                                     <img src="{{ Storage::url($membership->itemMain) }} " class="img-thumbnail w-75">
@@ -222,9 +220,26 @@
                                                                         <br>
                                                                         <b class="text-muted">Precio: ${{ $membership->price }} </b> <br>
                                                                     </p>
+                                                                    <div class="togglebutton">
+                                                                        <label>
+                                                                            <input wire:click="updateTarjet1({{ $membership->idOrder }})" type="checkbox" {{ $membership->tarjeta == 1 ? 'checked ' : '' }} name="tarjeta">
+                                                                            <span class="toggle"></span>
+                                                                            Web
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="togglebutton">
+                                                                        <label>
+                                                                            <input wire:click="updateAgenda1({{ $membership->idOrder }})" type="checkbox" {{ $membership->agenda == 1 ? 'checked ' : '' }} name="agenda">
+                                                                            <span class="toggle"></span>
+                                                                            Agenda
+                                                                        </label>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-md-3 text-center ">
-
+                                                                <div class="col-12 col-md-3 ">
+                                                                    <input id="nota{{ $membership->id }}" style="padding-top:0; padding-bottom:0; border:none; width:150px " class="border text-muted rounded" type="text" value="{{ $membership->nota }}">
+                                                                    <button class="btn btn-info btn-link text-success " onclick="udateData('{{ $membership->idOrder }}','{{ $membership->folio }}','nota{{ $membership->id }}')">
+                                                                        <i class=" material-icons ">save</i>
+                                                                    </button>
                                                                 </div>
 
                                                             </div>
@@ -249,7 +264,7 @@
                                                     </div>
 
                                                     <!-- Card body -->
-                                                    <div id="collapse33" class="collapse" role="tabpanel" aria-labelledby="heading32" data-parent="#accordionEx6">
+                                                    <div id="collapse33" class="collapse {{$productsPackagesOrder->count() > 0 ?'show':''}}" role="tabpanel" aria-labelledby="heading32" data-parent="#accordionEx6">
                                                         <div class="card-body rgba-black-light white-text z-depth-1">
                                                             @if(isset($productsPackagesOrder) && $productsPackagesOrder->count() > 0)
                                                             @foreach($productsPackagesOrder as $product)
@@ -351,4 +366,27 @@
         </div>
 
     </div>
+
+
+    <script type="text/javascript">
+        function udateData(idChange, folio, newNote) {
+            //Lanzar evento para actualizar membresia
+
+            nota = $('#' + newNote).val();
+
+            Swal.fire({
+                title: "Actualizar",
+                text: 'Se va a actualizar la nota del folio: "MACA-' + folio + '", Nota: "' + nota + '"',
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, actualizar!",
+            }).then((result) => {
+                if (result.value) {
+                    Livewire.emit('udateData1', idChange, nota);
+                }
+            });
+        }
+    </script>
 </div>

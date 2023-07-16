@@ -15,7 +15,7 @@ class Product extends Model
        public function ventas()
        {
            //return $this->belongsToMany('App\Models\Shipment','idProduct');
-           return $this->hasMany(Shipment::class,'idProduct');
+           return $this->hasMany(Shipment::class,'idProduct')->orderBy('title');
        }
 
        //Relacion muchos a muchos con paquete

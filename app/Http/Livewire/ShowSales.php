@@ -34,6 +34,8 @@ class ShowSales extends Component
         $this->ids = $div[5];
         $this->order = Order::findOrFail($this->ids);
         $this->idPackage = 1000;
+
+        dd($this->order);
     }
 
     public function render()

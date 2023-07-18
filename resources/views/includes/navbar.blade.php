@@ -38,7 +38,11 @@
             <i class="material-icons">home</i>Inicio
           </a>
         </li>
-        
+        <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
+          <a href="{{ route('dashboard') }}" class="nav-link text-primary">
+            <i class="material-icons">dashboard</i> dashboard
+          </a>
+        </li>
         <li class="nav-item{{ $activePage == 'presupuesto' ? ' active' : '' }}">
           <a href="{{ route('presupuesto') }}" class="nav-link text-primary">
             <i class="material-icons">savings</i> Presupuesto
@@ -65,11 +69,7 @@
             </i> Membresias
           </a>
         </li>
-        <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
-          <a href="{{ route('dashboard') }}" class="nav-link text-primary">
-            <i class="material-icons">dashboard</i> dashboard
-          </a>
-        </li>
+       
         
         <li class="nav-item dropdown">
           <a class="nav-link text-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

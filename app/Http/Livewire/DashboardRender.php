@@ -32,7 +32,7 @@ class DashboardRender extends Component
         $this->products = Product::all();
         $this->packages = Package::all();
         $this->memberships = Membership::all();
-        $this->salesDay = Order::whereBetween('created_at', [$day . " 00:00:01", $day . " 23:59:59"])
+        $this->salesDay = Order::whereBetween('created_at', [$day . " 00:00:00", $day . " 23:59:59"])
             ->sum('amount');
 
         $this->salesMonth = Order::whereMonth('created_at', $month)
@@ -45,21 +45,21 @@ class DashboardRender extends Component
 
         $this->productsDay = Product::join('shipments', 'shipments.idProduct', 'products.id')
             ->join('orders', 'shipments.id_order', 'orders.id')
-            ->whereBetween('orders.created_at', [$day . " 00:00:01", $day . " 23:59:59"])
+            ->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"])
             ->get();
 
 
 
         $this->packagesDay = Package::join('shipments', 'shipments.idPackage', 'packages.id')
-        ->join('orders', 'shipments.id_order', 'orders.id')
-        ->whereBetween('orders.created_at', [$day . " 00:00:01", $day . " 23:59:59"])
-        ->get();
-        
-       
+            ->join('orders', 'shipments.id_order', 'orders.id')
+            ->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"])
+            ->get();
+
+
 
         $this->membershipsDay = Membership::join('shipments', 'shipments.idMembership', 'memberships.id')
             ->join('orders', 'shipments.id_order', 'orders.id')
-            ->whereBetween('orders.created_at', [$day . " 00:00:01", $day . " 23:59:59"])
+            ->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"])
             ->get();
 
 

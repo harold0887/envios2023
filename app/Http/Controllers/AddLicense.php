@@ -57,7 +57,7 @@ class AddLicense
             
             return true;
         } else {
-
+            set_time_limit(0);
             $correo = new EnvioMaterial($this->product);
             Mail::to($this->order->email)->send($correo);
             return true;

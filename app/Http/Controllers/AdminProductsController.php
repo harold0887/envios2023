@@ -26,7 +26,7 @@ class AdminProductsController extends Controller
         $request->validate([
             'title' => 'required',
             'price' => 'required',
-            'document' => 'required|mimes:pdf,ppt,pptx',
+            'document' => 'required|mimes:pdf,ppt,pptx,zip',
             'itemMain' => 'required|image',
         ]);
 

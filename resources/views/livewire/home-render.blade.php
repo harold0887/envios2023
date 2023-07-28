@@ -3,14 +3,78 @@
     <div class="content-main ">
         @include('includes.borders')
 
+        <div class="row ">
+            <div class="col-12">
+                <div class="card  mb-2">
+                    <div class="card-body row  py-0">
+                        <div class="col-12">
+                            @if ($search != '')
+                            <div class="d-flex mt-2">
+                                <span class="text-base">Borrar filtros </span>
+                                <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="clearSearch()">close</i>
+                            </div>
+                            @endif
+                        </div>
+                        <div class="col-10 col-md-8 pr-0">
+                            <form class="form-group">
+                                <div class="input-group rounded">
+                                    <input id="input-search" type="search" class="form-control px-3" placeholder="Buscar por orden, email, etc..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-2 col-lg-1 p-0">
+                            <button type="submit" class="btn bg-transparent   btn-round btn-just-icon p-0" style="border:solid 1px #c09aed">
+                                <i class="material-icons " style="color:#c09aed">search</i>
+                            </button>
+                        </div>
+                        @if ($search != '')
+                        <div class="col-12">
+                            <small class="text-primary">{{ $orders->count() }} resultados obtenidos</small>
+                        </div>
+                        @if (isset($orders) && $orders->count() > 0)
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+
+                                <tbody>
+                                    @foreach ($orders as $order)
+                                    <tr>
+                                        <td>{{ $order->folio }}</td>
+                                        <td>{{date_format($order->created_at, 'd-M-Y H:i')}}</td>
+                                        <td>{{ $order->amount }}</td>
+                                        <td>{{ $order->socialNetwork }}</td>
+                                        <td>{{ $order->email }}</td>
+                                        <td class="td-actions">
+                                            <a class="btn btn-info btn-link" href="{{ route('sales.show', $order->id) }}" target="_blank">
+                                                <i class=" material-icons">visibility</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-12">
+                            {{ $orders->links() }}
+                        </div>
+                        @else
+                        <div class="col-12">
+                            <p class="alert alert-warning">⚠️ ¡Ooooups! No se encontraron resultados.</p>
+                        </div>
+                        @endif
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row d-flex justify-content-center">
             <div class="col-12">
 
                 <!--Accordion wrapper-->
-                <div class="accordion md-accordion accordion-5" id="accordionEx5" role="tablist" aria-multiselectable="true">
+                <div class="accordion md-accordion accordion-5 " id="accordionEx5" role="tablist" aria-multiselectable="true">
 
                     <!-- Accordion card -->
-                    <div class="card mb-4">
+                    <div class="card mb-4  my-0">
 
                         <!-- Card header -->
                         <div class="card-header p-0 z-depth-1 shadow" role="tab" id="heading30">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Order;
 use App\Models\Package;
 use App\Models\Product;
 use Livewire\Component;
@@ -16,10 +17,12 @@ class HomeRender extends Component
     public $memberships;
     public $shipmentsProducts;
     public $img, $title, $price;
+    public $search = '';
+
 
     public function mount()
     {
-        $this->products = Product::orderBy('created_at','desc')
+        $this->products = Product::orderBy('created_at', 'desc')
             ->where('status', true)
             ->get();
         $this->packages = Package::orderBy('title')
@@ -28,16 +31,21 @@ class HomeRender extends Component
         $this->memberships = Membership::orderBy('title')
             ->where('status', true)
             ->get();
-        $this->shipmentsProducts =Shipment::
-        join('products','shipments.idProduct','products.id' )
-        ->where('id_order',8)
-        ->select('products.title','shipments.price','products.itemMain')
-        ->get();
+        $this->shipmentsProducts = Shipment::join('products', 'shipments.idProduct', 'products.id')
+            ->where('id_order', 8)
+            ->select('products.title', 'shipments.price', 'products.itemMain')
+            ->get();
         //dd(json_encode($this->shipmentsProducts));
     }
     public function render()
     {
-        return view('livewire.home-render');
+        $orders = Order::where(function ($query) {
+            $query->where('socialNetwork', 'like', '%' . $this->search . '%')
+                ->orWhere('email', 'like', '%' . $this->search . '%')
+                ->orWhere('folio', 'like', '%' . $this->search . '%');
+        })
+            ->paginate(100);
+        return view('livewire.home-render', compact('orders'));
     }
 
     public function addCart($id, $model)
@@ -53,9 +61,9 @@ class HomeRender extends Component
         }
         //dd($product);
 
-        $this->img=Storage::url($product->itemMain);
-        $this->title=$product->title;
-        $this->price=$product->price;
+        $this->img = Storage::url($product->itemMain);
+        $this->title = $product->title;
+        $this->price = $product->price;
 
         \Cart::add(array(
             'id' => $product->id,
@@ -67,16 +75,22 @@ class HomeRender extends Component
         ));
 
 
-      
+
 
 
 
 
         $this->emit('cart:update');
-        $this->emit('addCartAlert',[
+        $this->emit('addCartAlert', [
             'title' => $this->title,
-            'price'=>$this->price,
-            'image'=>$this->img
+            'price' => $this->price,
+            'image' => $this->img
         ]);
+    }
+
+
+    public function clearSearch()
+    {
+        $this->reset(['search']);
     }
 }

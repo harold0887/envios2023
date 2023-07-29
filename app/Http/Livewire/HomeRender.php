@@ -43,7 +43,7 @@ class HomeRender extends Component
             $query->where('socialNetwork', 'like', '%' . $this->search . '%')
                 ->orWhere('email', 'like', '%' . $this->search . '%')
                 ->orWhere('folio', 'like', '%' . $this->search . '%');
-        })
+        })->orderBy('created_at', 'desc')
             ->paginate(100);
         return view('livewire.home-render', compact('orders'));
     }
@@ -73,13 +73,6 @@ class HomeRender extends Component
             'attributes' => array([]),
             'associatedModel' => $product
         ));
-
-
-
-
-
-
-
         $this->emit('cart:update');
         $this->emit('addCartAlert', [
             'title' => $this->title,

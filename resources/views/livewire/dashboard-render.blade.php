@@ -163,10 +163,10 @@ $sumMemberships=0;
             <p class="card-category">Ventas del día</p>
             <h3 class="card-title"> ${{ number_format($salesDay,2) }} </h3>
           </div>
-          <div class="card-footer">
+          <div class="card-footer p-0">
             <div class="stats">
-              <i class="material-icons text-danger">warning</i>
-              <a href="#pablo">Get More Space...</a>
+
+              <input class="form-control" type="text" value="" placeholder="" />
             </div>
           </div>
         </div>
@@ -177,29 +177,30 @@ $sumMemberships=0;
             <div class="card-icon">
               <i class="fa-solid fa-chart-pie"></i>
             </div>
-            <p class="card-category">Ventas del mes</p>
+            <p class="card-category">Ventas del mes de {{$monthSelectName}} {{$yearSelect}}</p>
             <h3 class="card-title">${{ number_format($salesMonth,2) }} </h3>
           </div>
-          <div class="card-footer">
-            <div class="stats">
-              <select class="form-control text-muted" wire:model="month">
+          <div class="card-footer p-0">
+            <div class="stats ">
+              <select class="form-control text-muted" wire:model="monthSelect">
                 <option selected value="">Selecciona el mes...</option>
-                <option value="1">Enero</option>
-                <option value="2">Febrero</option>
-                <option value="3">Marzo</option>
-                <option value="4">April</option>
-                <option value="5">Mayo</option>
-                <option value="6">Junio</option>
-                <option value="7">Julio</option>
-                <option value="8">Agosto</option>
-                <option value="9">Septiembre</option>
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">April</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Septiembre</option>
                 <option value="10">Octubre</option>
                 <option value="11">Noviembre</option>
                 <option value="12">Diciembre</option>
               </select>
+              @if( $monthSelect != now()->format('m') )
+              <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="$set('monthSelect', '{{now()->format('m')}}')">close</i>
+              @endif
 
-
-              <!-- <i class="material-icons">local_offer</i> Tracked from Google Analytics -->
             </div>
           </div>
         </div>
@@ -213,9 +214,17 @@ $sumMemberships=0;
             <p class="card-category">Ventas del año</p>
             <h3 class="card-title">${{ number_format($salesYear,2) }} </h3>
           </div>
-          <div class="card-footer">
+          <div class="card-footer p-0">
             <div class="stats">
-              <i class="material-icons">date_range</i> Last 24 Hours
+              <select class="form-control" name="fop" wire:model="yearSelect">
+                <option selected value="">Selecciona el año...</option>
+                @for ($i = 2020; $i < 2030; $i++) <option value="{{$i}}"> {{$i}} </option>
+                  @endfor
+              </select>
+
+              @if( $yearSelect != now()->format('Y') )
+              <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="$set('yearSelect', '{{now()->format('Y')}}')">close</i>
+              @endif
             </div>
           </div>
         </div>
@@ -224,14 +233,15 @@ $sumMemberships=0;
         <div class="card card-stats">
           <div class="card-header card-header-info card-header-icon">
             <div class="card-icon">
-              <i class="fa fa-twitter"></i>
+            <i class="fa-solid fa-square-full"></i>
             </div>
-            <p class="card-category">Followers</p>
-            <h3 class="card-title">+245</h3>
+            <p class="card-category">Ventas por rango</p>
+            <h3 class="card-title">${{$salesRange}}</h3>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons">update</i> Just Updated
+
+              <input class="form-control" type="text" name="datefilter" value="" placeholder="Seleccione rango..." />
             </div>
           </div>
         </div>
@@ -249,7 +259,7 @@ $sumMemberships=0;
             <div class="card-icon">
               <i class="material-icons"></i>
             </div>
-            <h4 class="card-title">Detale de ventas</h4>
+            <h4 class="card-title">Detale de ventas por día</h4>
           </div>
           <div class="card-body ">
             <div class="row">
@@ -397,19 +407,58 @@ $sumMemberships=0;
       </div>
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </div>
+
+
+
+
+
+  @push('js')
+
+  <!--  Data picker select range    -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <!-- End Data picker select range    -->
+
+
+  <script type="text/javascript">
+    $(function() {
+
+      $('input[name="datefilter"]').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+          cancelLabel: 'Clear'
+        }
+      });
+
+      $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+        Livewire.emit('rangeSelect', picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'), picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format('DD-MM-YYYY'))
+      });
+
+      $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+        Livewire.emit('rangeClear')
+      });
+    });
+  </script>
+
+
+  @endpush
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>

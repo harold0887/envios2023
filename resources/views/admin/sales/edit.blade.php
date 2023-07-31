@@ -21,7 +21,6 @@
                         <form action="{{ route('sales.update',$order->id) }}" method="POST">
                             @csrf @method('PATCH')
                             <div class="form-row">
-
                                 <div class="form-group col-md-3">
                                     <label for="order">email</label>
                                     <input type="text" class="form-control" name="email" value="{{ old('email')?:$order->email  }}">
@@ -50,14 +49,9 @@
                                     <small class="text-danger"> {{ $message }} </small>
                                     @enderror
                                 </div>
-                                
-
-
                             </div>
-
                             <div class="col-sm-12 text-center mt-5">
                                 <button type="submit" class="btn btn-primary">Actualizar</button>
-
                             </div>
                         </form>
                         <livewire:sales-edit />

@@ -236,9 +236,9 @@ $sumMemberships=0;
             <i class="fa-solid fa-square-full"></i>
             </div>
             <p class="card-category">Ventas por rango</p>
-            <h3 class="card-title">${{$salesRange}}</h3>
+            <h3 class="card-title">${{ number_format($salesRange,2) }} </h3>
           </div>
-          <div class="card-footer">
+          <div class="card-footer p-0">
             <div class="stats">
 
               <input class="form-control" type="text" name="datefilter" value="" placeholder="Seleccione rango..." />

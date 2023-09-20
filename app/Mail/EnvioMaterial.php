@@ -28,6 +28,7 @@ class EnvioMaterial extends Mailable
         $this->name = $product->name;
         $this->format = $product->format;
         $this->document = $product->document;
+        $this->folio=$product->folio;
         //$response = Http::get("https://materialdidacticomaca.com/D6MGXLG1");
         //$this->articles = $response = json_decode($response);
     }
@@ -40,7 +41,7 @@ class EnvioMaterial extends Mailable
      */
     public function build()
     {
-        if ($this->format == 'pdf') {
+        if ($this->format == 'pdf' && $this->folio==true) {
 
             return $this->markdown('emails.envio.order')
                 ->attach('./pdf/newpdf.pdf', [

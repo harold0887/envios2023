@@ -20,6 +20,7 @@ class CartRender extends Component
     public $productSend, $membershipSend;
 
     public $name, $email, $socialNetwork, $fop;
+    public $web;
 
     public $lastOrder;
     public $folio;
@@ -37,6 +38,11 @@ class CartRender extends Component
         'fop.required' => 'Seleccione una opcion correcta',
         'payment.required' => 'Debe cargar el comprobante de pago',
     ];
+    public function mount()
+    {
+        $this->web = false;
+    }
+
     public function render()
     {
 
@@ -75,7 +81,18 @@ class CartRender extends Component
     {
 
 
-        $this->validate();
+
+
+
+        if ($this->web == false) {
+            $this->validate();
+        } else {
+            $this->validate([
+                'email' => 'required|string|email',
+                'socialNetwork' => 'required|string',
+                'fop' => 'required',
+            ]);
+        }
 
 
         try {
@@ -83,7 +100,7 @@ class CartRender extends Component
                 'amount' => \Cart::getTotal(),
                 'socialNetwork' => $this->socialNetwork,
                 'email' => $this->email,
-                'receiptPayment' => $this->payment->store('public/payments'),
+                'receiptPayment' => isset($this->payment) ? $this->payment->store('public/payments'):'',
                 'fop' => $this->fop,
             ]);
             $this->folio = "MACA-" . $newOrder->id;
@@ -191,5 +208,14 @@ class CartRender extends Component
                 'message' => 'Error al enviar el email - ' . $e->getMessage(),
             ]);
         }
+    }
+
+    public function changeWeb()
+    {
+
+        $this->web == false ? $this->web = true : $this->web = false;
+        $this->web == false ? $this->fop = '' : $this->fop = 'Mercado Pago';
+
+       
     }
 }

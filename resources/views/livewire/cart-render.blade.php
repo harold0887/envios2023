@@ -86,6 +86,16 @@
                         <small class=" text-danger"> {{ $message }} </small>
                         @enderror
                     </div>
+                    <div class="col-">
+                        <div class="togglebutton">
+                            <label>
+                                <input wire:click="changeWeb()" type="checkbox" {{ $web == 1 ? 'checked ' : '' }}>
+                                <span class="toggle"></span>
+                                Web
+                            </label>
+                        </div>
+                    </div>
+                    @if ( $web == 0)
                     <div class="col-12 pt-3 text-center">
 
                         <div class="fileinput-preview fileinput-exists thumbnail img-circle"></div>
@@ -99,6 +109,8 @@
                         <small class=" text-danger"> {{ $message }} </small>
                         @enderror
                     </div>
+                    @endif
+
                     <div class="col-12 text-center">
                         @if ($payment)
                         <img class="w-100 rounded shadow" src="{{ $payment->temporaryUrl() }}">

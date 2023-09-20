@@ -82,6 +82,18 @@
                                             @endif
                                             Nombre
                                         </th>
+                                        <th style="cursor:pointer" wire:click="setSort('folio')">
+                                            @if($sortField=='folio')
+                                            @if($sortDirection=='asc')
+                                            <i class="fa-solid fa-arrow-down-a-z"></i>
+                                            @else
+                                            <i class="fa-solid fa-arrow-up-z-a"></i>
+                                            @endif
+                                            @else
+                                            <i class="fa-solid fa-sort mr-1"></i>
+                                            @endif
+                                            Folio
+                                        </th>
                                         <th style="cursor:pointer" wire:click="setSort('price')">
                                             @if($sortField=='price')
                                             @if($sortDirection=='asc')
@@ -97,7 +109,7 @@
 
 
 
-
+                                        <th>Ventas</b></th>
 
                                         <th style="cursor:pointer" wire:click="setSort('status')">
                                             @if($sortField=='status')
@@ -111,7 +123,7 @@
                                             @endif
                                             Status
                                         </th>
-                                        <th>Ventas</b></th>
+                                        
 
                                         <th>Acciones</b></th>
                                     </tr>
@@ -121,11 +133,21 @@
                                     <tr class="{{ $product->percentage > 0 ? 'text-danger' : '' }}">
                                         <td>{{ $product->id }}</td>
                                         <td>{{ $product->title }}</td>
+                                        <td>
+                                            <div class="togglebutton" wire:click="changeFolio({{ $product->id }}, '{{ $product->folio }}')">
+                                                <label>
+                                                    <input type="checkbox" {{ $product->folio == 1 ? 'checked ' : '' }}>
+                                                    <span class="toggle"></span>
+                                                </label>
+                                            </div>
+                                        </td>
                                         <td>{{ $product->price }}</td>
 
 
 
-
+                                        <td>
+                                            {{ $product->ventas }}
+                                        </td>
 
 
                                         <td>
@@ -136,9 +158,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                        <td>
-                                            {{ $product->ventas }}
-                                        </td>
+                                      
 
                                         <td class="td-actions">
                                             <div class="btn-group m-0 d-flex" style="box-shadow: none !important">

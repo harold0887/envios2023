@@ -34,8 +34,6 @@ class ShowSales extends Component
         $this->ids = $div[5];
         $this->order = Order::findOrFail($this->ids);
         $this->idPackage = 1000;
-
-       
     }
 
     public function render()
@@ -183,7 +181,7 @@ class ShowSales extends Component
     {
 
         try {
-            if ($product->format == 'pdf') {
+            if ($product->format == 'pdf' && $product->folio == 1) {
 
                 $addLicense = new AddLicense($product, $this->order);
 
@@ -194,7 +192,7 @@ class ShowSales extends Component
                 }
             } else {
                 $this->emit('error', [
-                    'message' => 'Error al descargar el documento -  No es un PDF',
+                    'message' => 'Error al descargar el documento -  No es un PDF o no requiere folio',
                 ]);
             }
         } catch (\Throwable $th) {
@@ -224,7 +222,7 @@ class ShowSales extends Component
 
     public function updateTarjet1($id)
     {
-       
+
         try {
             $venta = Shipment::findOrFail($id);
 
@@ -244,7 +242,7 @@ class ShowSales extends Component
     }
     public function udateData1($id,  $nota)
     {
-        
+
         try {
             Shipment::findOrFail($id)->update([
                 'nota' => $nota

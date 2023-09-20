@@ -27,9 +27,9 @@ class AddLicense
 
     public function sendDocumento()
     {
-        if ($this->product->format == 'pdf') {
+        if ($this->product->format == 'pdf' && $this->product->folio == 1) {
 
-            //Agregar folio a PDF
+            //Agregar folio a PDF solo de los materiales con folio
             $pdf = new Fpdi();
 
 
@@ -67,6 +67,7 @@ class AddLicense
 
     public function download()
     {
+        
 
         //Agregar folio a PDF
         $pdf = new Fpdi();

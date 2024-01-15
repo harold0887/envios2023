@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Package extends Model
@@ -12,12 +13,21 @@ class Package extends Model
     protected $guarded = [];
 
     //Relacion muchos a muchos con productos
-   
 
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'package_product', 'package_id', 'product_id');
     }
 
-  
+
+    //Relacion con ventas, retorna las ventas del paquete
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Shipment::class, 'idPackage', 'id');
+    }
+
+
+ 
+
+
 }

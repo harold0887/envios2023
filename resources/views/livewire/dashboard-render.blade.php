@@ -23,25 +23,21 @@ $sumMemberships=0;
           </div>
           <div class="card-body row">
             <div class="col-12">
-              @if ($search != '')
-              <div class="d-flex mt-2">
-                <span class="text-base">Borrar filtros </span>
-                <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="clearSearch()">close</i>
-              </div>
-              @endif
-            </div>
-            <div class="col-10 col-md-8 pr-0">
-              <form class="form-group">
-                <div class="input-group rounded">
-                  <input id="input-search" type="search" class="form-control px-3" placeholder="Buscar por orden, email, etc..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+              <div class="row justify-content-between">
+                <div class="col-12 col-md-8   align-self-md-center">
+                  <div class="input-group rounded ">
+                    <input id="input-search" type="search" class="form-control px-3" placeholder="Buscar por orden, email, etc..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                    @if ($search != '')
+                    <span class="input-group-text" style="cursor:pointer" wire:click="clearSearch()"><i class="material-icons mx-0 text-lg text-danger">close</i></span>
+                    @endif
+                  </div>
                 </div>
-              </form>
+
+
+              </div>
             </div>
-            <div class="col-2 col-lg-1 p-0">
-              <button type="submit" class="btn bg-transparent   btn-round btn-just-icon p-0" style="border:solid 1px #c09aed">
-                <i class="material-icons " style="color:#c09aed">search</i>
-              </button>
-            </div>
+
+
             @if ($search != '')
             <div class="col-12">
               <small class="text-primary">{{ $orders->count() }} resultados obtenidos</small>
@@ -233,7 +229,7 @@ $sumMemberships=0;
         <div class="card card-stats">
           <div class="card-header card-header-info card-header-icon">
             <div class="card-icon">
-            <i class="fa-solid fa-square-full"></i>
+              <i class="fa-solid fa-square-full"></i>
             </div>
             <p class="card-category">Ventas por rango</p>
             <h3 class="card-title">${{ number_format($salesRange,2) }} </h3>
@@ -247,19 +243,82 @@ $sumMemberships=0;
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">trending_up</i>
+            </div>
+            <h4 class="card-title">TOP Ventas</h4>
+          </div>
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-12">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+
+                        <th><b>Producto</b></th>
+                        <th class="text-center"><b>Numero de ventas</b></th>
+                        <th class="text-end"><b>Total Vendido</b></th>
+
+                      </tr>
+                    </thead>
+                    <tbody class="h5 ">
+                      @foreach($topProducts as $product)
+
+                      @php
+
+                      $porcentaje= ($product->sales_count)*100/$max_top_products->sales_count;
+                      @endphp
+                      <tr>
+                        <td> {{$product->title}} </td>
+                        <td>
+                          <div class="row">
+                            <div class="col-3 text-end">
+                              {{$product->sales_count}}
+                            </div>
+                            <div class="col">
+                              <div class="progress mt-3">
+                                <div class="progress-bar bg-success" style="width:{{$porcentaje}}%" aria-valuemax="{{$max_top_products}}"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-end"> {{ number_format( $product->sales_sum_price,2)}} </td>
+                      </tr>
+
+                      @endforeach
 
 
+                    </tbody>
+                  </table>
 
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+  
 
 
     <div class="row">
       <div class="col-md-12">
         <div class="card ">
-          <div class="card-header card-header-success card-header-icon">
+          <div class="card-header card-header-info card-header-icon">
             <div class="card-icon">
               <i class="material-icons"></i>
             </div>
-            <h4 class="card-title">Detale de ventas por día</h4>
+            <h4 class="card-title">Detalle de ventas por día</h4>
           </div>
           <div class="card-body ">
             <div class="row">
@@ -407,7 +466,16 @@ $sumMemberships=0;
       </div>
     </div>
 
+
+
+
   </div>
+
+
+
+
+
+
 
 
 

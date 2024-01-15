@@ -12,40 +12,33 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6 px-0">
-                                <h4 class="card-title font-weight-bold">Membresias ({{$memberships->total()}} registros).</h4>
+                                <h4 class="card-title font-weight-bold">Membresias ({{$memberships->total()}} registros)</h4>
                             </div>
 
                         </div>
                     </div>
                     <div class="card-body row">
                         <div class="col-12">
-                            @if ($search != '')
-                            <div class="d-flex mt-2">
-                                <span class="text-base">Borrar filtros </span>
-                                <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="clearSearch()">close</i>
-                            </div>
-                            @endif
-                        </div>
-                        <div class="col-10 col-md-8 pr-0">
-                            <form class="form-group">
-                                <div class="input-group rounded">
-                                    <input id="input-search" type="search" class="form-control px-3" placeholder=" Buscar por nombre..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                            <div class="row justify-content-between">
+                                <div class="col-12 col-md-8   align-self-md-center">
+                                    <div class="input-group rounded ">
+                                        <input id="input-search" type="search" class="form-control px-3" placeholder=" Buscar por nombre..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                                        @if ($search != '')
+                                        <span class="input-group-text" style="cursor:pointer" wire:click="clearSearch()"><i class="material-icons mx-0 text-lg text-danger">close</i></span>
+                                        @endif
+                                    </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col-2 col-lg-1 p-0">
-                            <button type="submit" class="btn bg-transparent   btn-round btn-just-icon p-0" style="border:solid 1px #c09aed">
-                                <i class="material-icons " style="color:#c09aed">search</i>
-                            </button>
+
+                                <div class="col-12 col-md-auto  align-self-md-center">
+                                    <a class="btn btn-primary btn-block" href="{{ route('memberships.create') }}">
+                                        <i class="material-icons">add_circle</i>
+                                        <span>Nueva membresia</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
 
 
-                        <div class="col-12 col-md-3 text-right">
-                            <a class="btn btn-primary btn-block" href="{{ route('memberships.create') }}">
-                                <i class="material-icons">add_circle</i>
-                                <span>Nueva membresia</span>
-                            </a>
-                        </div>
                         <div class="col-12">
                             @if ($search != '')
                             <small class="text-primary">{{ $memberships->count() }} resultados obtenidos</small>
@@ -98,7 +91,16 @@
                                             @endif
                                             Estatus
                                         </th>
-                                        <th>
+                                        <th style="cursor:pointer" wire:click="setSort('sales_count')">
+                                            @if($sortField=='sales_count')
+                                            @if($sortDirection=='asc')
+                                            <i class="fa-solid fa-arrow-down-a-z"></i>
+                                            @else
+                                            <i class="fa-solid fa-arrow-up-z-a"></i>
+                                            @endif
+                                            @else
+                                            <i class="fa-solid fa-sort mr-1"></i>
+                                            @endif
                                             Ventas
                                         </th>
 
@@ -112,10 +114,10 @@
                                         <td>{{ $membership->title }}</td>
                                         <td>{{ $membership->price }}</td>
 
-                                      
+
 
                                         <td>
-                                            <div class="togglebutton" wire:click="changeStatusMembership({{ $membership->id }}, '{{ $membership->status }}')">
+                                            <div class="togglebutton" wire:change="changeStatusMembership({{ $membership->id }}, '{{ $membership->status }}')">
                                                 <label>
                                                     <input type="checkbox" {{ $membership->status == 1 ? 'checked ' : '' }} name="status">
                                                     <span class="toggle"></span>
@@ -123,7 +125,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            {{$membership->ventas}}
+                                            {{$membership->sales_count}}
                                         </td>
                                         <td class="td-actions ">
                                             <div class="btn-group m-0 d-flex" style="box-shadow: none !important">

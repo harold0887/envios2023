@@ -1,5 +1,5 @@
 <div class="content p-0">
-   
+
     <div class="container-fluid">
 
         <div class="row ">
@@ -11,33 +11,33 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6 px-0">
-                                <h4 class="card-title font-weight-bold">Ventas ({{$orders->total()}} registros).</h4>
+                                <h4 class="card-title font-weight-bold">Ventas ({{$orders->total()}} registros)</h4>
                             </div>
                         </div>
                     </div>
                     <div class="card-body row">
                         <div class="col-12">
-                            @if ($search != '')
-                            <div class="d-flex mt-2">
-                                <span class="text-base">Borrar filtros </span>
-                                <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="clearSearch()">close</i>
-                            </div>
-                            @endif
-                        </div>
-                        <div class="col-10 col-md-8 pr-0">
-                            <form class="form-group">
-                                <div class="input-group rounded">
+                            <div class="row justify-content-between">
+                                <div class="col-12 col-md-8   align-self-md-center">
+                                    <div class="input-group rounded ">
                                     <input id="input-search" type="search" class="form-control px-3" placeholder="Buscar por orden, email, etc..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                                        @if ($search != '')
+                                        <span class="input-group-text" style="cursor:pointer" wire:click="clearSearch()"><i class="material-icons mx-0 text-lg text-danger">close</i></span>
+                                        @endif
+                                    </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col-2 col-lg-1 p-0">
-                            <button type="submit" class="btn bg-transparent   btn-round btn-just-icon p-0" style="border:solid 1px #c09aed">
-                                <i class="material-icons " style="color:#c09aed">search</i>
-                            </button>
+
+                              
+                            </div>
                         </div>
 
+
+
                        
+                        
+                       
+
+
                         <div class="col-12">
                             @if ($search != '')
                             <small class="text-primary">{{ $orders->count() }} resultados obtenidos</small>
@@ -49,7 +49,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                    <th style="cursor:pointer" wire:click="setSort('id')">
+                                        <th style="cursor:pointer" wire:click="setSort('id')">
                                             @if($sortField=='id')
                                             @if($sortDirection=='asc')
                                             <i class="fa-solid fa-arrow-down-a-z"></i>
@@ -62,7 +62,7 @@
 
                                             Id
                                         </th>
-                                      
+
                                         <th style="cursor:pointer" wire:click="setSort('created_at')">
                                             @if($sortField=='created_at')
                                             @if($sortDirection=='asc')
@@ -111,22 +111,22 @@
                                             @endif
                                             Email
                                         </th>
-                                      
-                                
+
+
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($orders as $order)
                                     <tr>
-                                    <td>{{ $order->folio }}</td>
-                                      
+                                        <td>{{ $order->folio }}</td>
+
                                         <td>{{date_format($order->created_at, 'd-M-Y H:i')}}</td>
                                         <td>{{ $order->amount }}</td>
                                         <td>{{ $order->socialNetwork }}</td>
-                                         <td>{{ $order->email }}</td>
-                                        
-                                       
+                                        <td>{{ $order->email }}</td>
+
+
                                         <td class="td-actions">
                                             <a class="btn btn-info btn-link" href="{{ route('sales.show', $order->id) }}">
                                                 <i class=" material-icons">visibility</i>
@@ -134,7 +134,7 @@
                                             <a class="btn btn-success btn-link " href="{{ route('sales.edit', $order->id) }}">
                                                 <i class="material-icons">edit</i>
                                             </a>
-                                           
+
                                             <a class="btn btn-success btn-link text-danger " wire:click="deleteOrder({{ $order->id }})">
                                                 <i class="material-icons ">close</i>
                                             </a>

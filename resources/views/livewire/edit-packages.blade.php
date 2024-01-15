@@ -1,7 +1,7 @@
 <div class="row ">
 
     <div class="col-12 col-lg-6 shadow rounded">
-        <h4 class="title  text-center text-muted">Documentos incluidos en el paquete</h4>
+        <h4 class="title  text-center text-muted">{{$package->products->count()}} documentos incluidos en el paquete </h4>
         @foreach($package->products as $item)
         <div class="row justify-content-center">
             <div class="col-7 col-md-3">
@@ -25,17 +25,15 @@
             <div class="col-12">
                 <h4 class="title  text-center text-muted">Agregar documentos al paquete</h4>
             </div>
-            <div class="col-8">
-                <input type="search" class="form-control px-3 w-full" placeholder="Buscar título..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
-            </div>
-            <div class="col-4 text-end">
-                @if ($search != '')
-                <div class="d-flex mt-2">
-                    <span class="text-base">Borrar filtros </span>
-                    <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="clearSearch()">close</i>
+            <div class="col-12">
+                <div class="input-group  ">
+                    <input type="search" class="form-control px-3" placeholder=" Buscar por titulo..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                    @if ($search != '')
+                    <span class="input-group-text" style="cursor:pointer" wire:click="clearSearch()"><i class="material-icons mx-0 text-lg text-danger">close</i></span>
+                    @endif
                 </div>
-                @endif
             </div>
+            
         </div>
 
 

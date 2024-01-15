@@ -12,39 +12,35 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6 px-0">
-                                <h4 class="card-title font-weight-bold">Paquetes ({{$packages->total()}} registros).</h4>
+                                <h4 class="card-title font-weight-bold">Paquetes ({{$packages->total()}} registros)</h4>
                             </div>
 
                         </div>
                     </div>
                     <div class="card-body row">
                         <div class="col-12">
-                            @if ($search != '')
-                            <div class="d-flex mt-2">
-                                <span class="text-base">Borrar filtros </span>
-                                <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="clearSearch()">close</i>
-                            </div>
-                            @endif
-                        </div>
-                        <div class="col-10 col-md-8 pr-0">
-                            <form class="form-group">
-                                <div class="input-group rounded">
-                                    <input id="input-search" type="search" class="form-control px-3" placeholder=" Buscar por titulo..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                            <div class="row justify-content-between">
+                                <div class="col-12 col-md-8   align-self-md-center">
+                                    <div class="input-group rounded ">
+                                        <input id="input-search" type="search" class="form-control px-3" placeholder=" Buscar por titulo..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                                        @if ($search != '')
+                                        <span class="input-group-text" style="cursor:pointer" wire:click="clearSearch()"><i class="material-icons mx-0 text-lg text-danger">close</i></span>
+                                        @endif
+                                    </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col-2 col-lg-1 p-0">
-                            <button type="submit" class="btn bg-transparent   btn-round btn-just-icon p-0" style="border:solid 1px #c09aed">
-                                <i class="material-icons " style="color:#c09aed">search</i>
-                            </button>
+
+                                <div class="col-12 col-md-auto  align-self-md-center">
+                                    <a class="btn btn-primary btn-block " href="{{ route('package.create') }}">
+                                        <i class="material-icons">add_circle</i>
+                                        <span>Nuevo Paquete</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-12 col-md-3">
-                            <a class="btn btn-primary btn-block " href="{{ route('package.create') }}">
-                                <i class="material-icons">add_circle</i>
-                                <span>Nuevo Paquete</span>
-                            </a>
-                        </div>
+
+
+
                         <div class="col-12">
                             @if ($search != '')
                             <small class="text-primary">{{ $packages->count() }} resultados obtenidos</small>
@@ -83,7 +79,18 @@
                                             Precio
                                         </th>
 
-                                        <th>Materiales</th>
+                                        <th style="cursor:pointer" wire:click="setSort('products_count')">
+                                            @if($sortField=='products_count')
+                                            @if($sortDirection=='asc')
+                                            <i class="fa-solid fa-arrow-down-a-z"></i>
+                                            @else
+                                            <i class="fa-solid fa-arrow-up-z-a"></i>
+                                            @endif
+                                            @else
+                                            <i class="fa-solid fa-sort mr-1"></i>
+                                            @endif
+                                            Materiales
+                                        </th>
                                         <th style="cursor:pointer" wire:click="setSort('status')">
                                             @if($sortField=='status')
                                             @if($sortDirection=='asc')
@@ -94,12 +101,20 @@
                                             @else
                                             <i class="fa-solid fa-sort mr-1"></i>
                                             @endif
-
                                             Status
-
-
                                         </th>
-                                        <th>Ventas</th>
+                                        <th style="cursor:pointer" wire:click="setSort('sales_count')">
+                                            @if($sortField=='sales_count')
+                                            @if($sortDirection=='asc')
+                                            <i class="fa-solid fa-arrow-down-a-z"></i>
+                                            @else
+                                            <i class="fa-solid fa-arrow-up-z-a"></i>
+                                            @endif
+                                            @else
+                                            <i class="fa-solid fa-sort mr-1"></i>
+                                            @endif
+                                            Ventas
+                                        </th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -113,7 +128,7 @@
 
                                         <td>{{ $product->products->count() }}</td>
                                         <td>
-                                            <div class="togglebutton" wire:click="changeStatusPackage({{ $product->id }}, '{{ $product->status }}')">
+                                            <div class="togglebutton" wire:change="changeStatusPackage({{ $product->id }}, '{{ $product->status }}')">
                                                 <label>
                                                     <input type="checkbox" {{ $product->status == 1 ? 'checked ' : '' }} name="status">
                                                     <span class="toggle"></span>
@@ -121,23 +136,25 @@
                                             </div>
                                         </td>
 
-                                        <td>{{ $product->ventas }}</td>
+                                        <td>
+                                            {{ $product->sales_count }}
+                                        </td>
                                         <td class="td-actions">
                                             <div class="btn-group m-0 d-flex" style="box-shadow: none !important">
 
-                                            <a href="{{ route('package.edit', $product->id) }}">
-                                                <button type="button" rel="tooltip" class="btn btn-success btn-link d-inline" data-original-title="" title="">
-                                                    <i class="material-icons">edit</i>
-                                                </button>
-                                            </a>
-                                            <form method="post" action="{{ route('package.destroy', $product->id) }} ">
-                                                <input type="text" hidden value="{{$product->title}}">
-                                                <button class=" btn btn-danger btn-link btn-icon btn-sm remove show-alert-delete-package">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <i class="material-icons ">close</i>
-                                                </button>
-                                            </form>
+                                                <a href="{{ route('package.edit', $product->id) }}">
+                                                    <button type="button" rel="tooltip" class="btn btn-success btn-link d-inline" data-original-title="" title="">
+                                                        <i class="material-icons">edit</i>
+                                                    </button>
+                                                </a>
+                                                <form method="post" action="{{ route('package.destroy', $product->id) }} ">
+                                                    <input type="text" hidden value="{{$product->title}}">
+                                                    <button class=" btn btn-danger btn-link btn-icon btn-sm remove show-alert-delete-package">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <i class="material-icons ">close</i>
+                                                    </button>
+                                                </form>
                                             </div>
 
 

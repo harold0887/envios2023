@@ -20,6 +20,8 @@ class DashboardRender extends Component
     public $sortDirection = 'desc';
     public $sortField = 'created_at';
     public $monthSelect, $monthSelectName, $yearSelect;
+    public  $topProducts;
+    public  $max_top_products;
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = ['rangeSelect', 'rangeClear'];
@@ -104,6 +106,23 @@ class DashboardRender extends Component
                 $this->maxMemberships = $membership->n;
             }
         }
+
+
+        $this->topProducts = Product::where(function ($query) {
+            $query->where('title', 'like', '%' . $this->search . '%');
+        })->withCount('sales')
+            ->withSum('sales', 'price')
+            ->orderBy('sales_count', 'desc')
+            ->take(5)
+            ->get();
+
+      
+
+        $this->max_top_products = Product::where(function ($query) {
+            $query->where('title', 'like', '%' . $this->search . '%');
+        })->withCount('sales')
+            ->orderBy('sales_count', 'desc')
+            ->first();
     }
 
 

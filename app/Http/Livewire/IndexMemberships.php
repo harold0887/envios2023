@@ -16,15 +16,19 @@ class IndexMemberships extends Component
     protected $listeners = [
         'delete' => 'delete',
     ];
+
     public function render()
     {
-        $memberships = Membership::where('title', 'like', '%' . $this->search . '%')
-        ->orderBy($this->sortField, $this->sortDirection)
-        ->paginate(15);
+        $memberships = Membership::where(function ($query) {
+            $query->where('title', 'like', '%' . $this->search . '%');
+        })->withCount('sales')
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate(50);
         return view('livewire.index-memberships', compact('memberships'));
     }
 
-     public function changeStatusMembership($id, $status)
+    
+    public function changeStatusMembership($id, $status)
     {
         try {
             Membership::findOrFail($id)->update([

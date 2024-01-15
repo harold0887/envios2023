@@ -14,7 +14,7 @@ class IndexPackages extends Component
     protected $paginationTheme = 'bootstrap';
     public $search = '';
     public $sortDirection = 'desc';
-    public $sortField = 'created_at';
+    public $sortField = 'ventas';
 
 
     public function updatingSearch()
@@ -25,13 +25,16 @@ class IndexPackages extends Component
     {
         $packages = Package::where(function ($query) {
             $query->where('packages.title', 'like', '%' . $this->search . '%');
-        })->orderBy($this->sortField, $this->sortDirection)
+        })->withCount('sales')
+            ->withCount('products')
+            ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(50);
+
+    
         return view('livewire.index-packages', compact('packages'));
     }
     public function deletePackage($id)
     {
-       
     }
     public function changeStatusPackage($id, $status)
     {
@@ -54,16 +57,16 @@ class IndexPackages extends Component
         $this->reset(['search']);
     }
 
-     //sort
-     public function setSort($field)
-     {
- 
-         $this->sortField = $field;
- 
-         if ($this->sortDirection == 'desc') {
-             $this->sortDirection = 'asc';
-         } else {
-             $this->sortDirection = 'desc';
-         }
-     }
+    //sort
+    public function setSort($field)
+    {
+
+        $this->sortField = $field;
+
+        if ($this->sortDirection == 'desc') {
+            $this->sortDirection = 'asc';
+        } else {
+            $this->sortDirection = 'desc';
+        }
+    }
 }

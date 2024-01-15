@@ -27,18 +27,19 @@ class IndexProducts extends Component
     {
         $products = Product::where(function ($query) {
             $query->where('title', 'like', '%' . $this->search . '%');
-        })->orderBy($this->sortField, $this->sortDirection)
+        })->withCount('sales')
+            ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(50);
         return view('livewire.index-products', compact('products'));
     }
-    
+
     public function changeStatus($id, $status)
     {
         try {
             Product::findOrFail($id)->update([
                 'status' => $status == 0 ? true : false
             ]);
-            
+
             $this->emit('success-auto-close', [
                 'message' => 'El cambio se realizo con éxito',
             ]);
@@ -95,6 +96,4 @@ class IndexProducts extends Component
             ]);
         }
     }
-
-    
 }

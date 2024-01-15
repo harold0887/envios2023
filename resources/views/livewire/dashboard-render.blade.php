@@ -149,166 +149,177 @@ $sumMemberships=0;
     </div>
 
     <div class="row">
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-warning card-header-icon">
-            <div class="card-icon">
+      <div class="col-12 col-lg-6">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
 
-              <i class="material-icons">equalizer</i>
-            </div>
-            <p class="card-category">Ventas del día</p>
-            <h3 class="card-title"> ${{ number_format($salesDay,2) }} </h3>
-          </div>
-          <div class="card-footer p-0">
-            <div class="stats">
-
-              <input class="form-control" type="text" value="" placeholder="" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-rose card-header-icon">
-            <div class="card-icon">
-              <i class="fa-solid fa-chart-pie"></i>
-            </div>
-            <p class="card-category">Ventas del mes de {{$monthSelectName}} {{$yearSelect}}</p>
-            <h3 class="card-title">${{ number_format($salesMonth,2) }} </h3>
-          </div>
-          <div class="card-footer p-0">
-            <div class="stats ">
-              <select class="form-control text-muted" wire:model="monthSelect">
-                <option selected value="">Selecciona el mes...</option>
-                <option value="01">Enero</option>
-                <option value="02">Febrero</option>
-                <option value="03">Marzo</option>
-                <option value="04">April</option>
-                <option value="05">Mayo</option>
-                <option value="06">Junio</option>
-                <option value="07">Julio</option>
-                <option value="08">Agosto</option>
-                <option value="09">Septiembre</option>
-                <option value="10">Octubre</option>
-                <option value="11">Noviembre</option>
-                <option value="12">Diciembre</option>
-              </select>
-              @if( $monthSelect != now()->format('m') )
-              <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="$set('monthSelect', '{{now()->format('m')}}')">close</i>
-              @endif
-
+                  <i class="material-icons">equalizer</i>
+                </div>
+                <p class="card-category">Ventas del día</p>
+                <h3 class="card-title"> ${{ number_format($salesDay,2) }} </h3>
+              </div>
+              <div class="card-footer p-0">
+                <div class="stats">
+                  <input class="form-control" type="text" value="" placeholder="" disabled>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-success card-header-icon">
-            <div class="card-icon">
-              <i class="fa-sharp fa-solid fa-calendar-days"></i>
-            </div>
-            <p class="card-category">Ventas del año</p>
-            <h3 class="card-title">${{ number_format($salesYear,2) }} </h3>
-          </div>
-          <div class="card-footer p-0">
-            <div class="stats">
-              <select class="form-control" name="fop" wire:model="yearSelect">
-                <option selected value="">Selecciona el año...</option>
-                @for ($i = 2020; $i < 2030; $i++) <option value="{{$i}}"> {{$i}} </option>
-                  @endfor
-              </select>
-
-              @if( $yearSelect != now()->format('Y') )
-              <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="$set('yearSelect', '{{now()->format('Y')}}')">close</i>
-              @endif
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-info card-header-icon">
-            <div class="card-icon">
-              <i class="fa-solid fa-square-full"></i>
-            </div>
-            <p class="card-category">Ventas por rango</p>
-            <h3 class="card-title">${{ number_format($salesRange,2) }} </h3>
-          </div>
-          <div class="card-footer p-0">
-            <div class="stats">
-
-              <input class="form-control" type="text" name="datefilter" value="" placeholder="Seleccione rango..." />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header card-header-success card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">trending_up</i>
-            </div>
-            <h4 class="card-title">TOP Ventas</h4>
-          </div>
-          <div class="card-body ">
-            <div class="row">
-              <div class="col-12">
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-
-                        <th><b>Producto</b></th>
-                        <th class="text-center"><b>Numero de ventas</b></th>
-                        <th class="text-end"><b>Total Vendido</b></th>
-
-                      </tr>
-                    </thead>
-                    <tbody class="h5 ">
-                      @foreach($topProducts as $product)
-
-                      @php
-
-                      $porcentaje= ($product->sales_count)*100/$max_top_products->sales_count;
-                      @endphp
-                      <tr>
-                        <td> {{$product->title}} </td>
-                        <td>
-                          <div class="row">
-                            <div class="col-3 text-end">
-                              {{$product->sales_count}}
-                            </div>
-                            <div class="col">
-                              <div class="progress mt-3">
-                                <div class="progress-bar bg-success" style="width:{{$porcentaje}}%" aria-valuemax="{{$max_top_products}}"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-end"> {{ number_format( $product->sales_sum_price,2)}} </td>
-                      </tr>
-
-                      @endforeach
-
-
-                    </tbody>
-                  </table>
-
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-rose card-header-icon">
+                <div class="card-icon">
+                  <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <p class="card-category">Ventas del mes de {{$monthSelectName}} {{$yearSelect}}</p>
+                <h3 class="card-title">${{ number_format($salesMonth,2) }} </h3>
+              </div>
+              <div class="card-footer p-0">
+                <div class="stats ">
+                  <select class="form-control text-muted" wire:model="monthSelect">
+                    <option selected value="">Selecciona el mes...</option>
+                    <option value="01">Enero</option>
+                    <option value="02">Febrero</option>
+                    <option value="03">Marzo</option>
+                    <option value="04">April</option>
+                    <option value="05">Mayo</option>
+                    <option value="06">Junio</option>
+                    <option value="07">Julio</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                  </select>
+                  @if( $monthSelect != now()->format('m') )
+                  <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="$set('monthSelect', '{{now()->format('m')}}')">close</i>
+                  @endif
 
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                  <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                </div>
+                <p class="card-category">Ventas del año</p>
+                <h3 class="card-title">${{ number_format($salesYear,2) }} </h3>
+              </div>
+              <div class="card-footer p-0">
+                <div class="stats">
+                  <select class="form-control" name="fop" wire:model="yearSelect">
+                    <option selected value="">Selecciona el año...</option>
+                    @for ($i = 2020; $i < 2030; $i++) <option value="{{$i}}"> {{$i}} </option>
+                      @endfor
+                  </select>
+
+                  @if( $yearSelect != now()->format('Y') )
+                  <i class="material-icons my-auto ml-2 text-base text-danger" style="cursor:pointer" wire:click="$set('yearSelect', '{{now()->format('Y')}}')">close</i>
+                  @endif
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                  <i class="fa-solid fa-square-full"></i>
+                </div>
+                <p class="card-category">Ventas por rango</p>
+                <h3 class="card-title">${{ number_format($salesRange,2) }} </h3>
+              </div>
+              <div class="card-footer p-0">
+                <div class="stats">
+
+                  <input class="form-control" type="text" name="datefilter" value="" placeholder="Seleccione rango..." />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">trending_up</i>
+                </div>
+                <h4 class="card-title">TOP Ventas</h4>
+              </div>
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+
+                            <th><b>Producto</b></th>
+                            <th class="text-center"><b>Numero de ventas</b></th>
+                            <th class="text-end"><b>Total Vendido</b></th>
+
+                          </tr>
+                        </thead>
+                        <tbody class="h5 ">
+                          @foreach($topProducts as $product)
+
+                          @php
+
+                          $porcentaje= ($product->sales_count)*100/$max_top_products->sales_count;
+                          @endphp
+                          <tr>
+                            <td> {{$product->title}} </td>
+                            <td>
+
+                              <div class="row justify-content-center">
+                                <div class="col text-end align-self-md-center p-0 mr-2">
+                                  {{$product->sales_count}}
+                                </div>
+                                <div class="col align-self-md-center  p-0">
+                                  <div class="progress mt-3 ">
+                                    <div class="progress-bar bg-success" style="width:{{$porcentaje}}%" aria-valuemax="{{$max_top_products}}"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="text-end"> {{ number_format( $product->sales_sum_price,2)}} </td>
+                          </tr>
+
+                          @endforeach
+
+
+                        </tbody>
+                      </table>
+
+
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
           </div>
         </div>
-
       </div>
+
+
+
+
     </div>
 
 
-  
+
+
 
 
     <div class="row">

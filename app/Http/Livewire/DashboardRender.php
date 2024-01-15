@@ -6,6 +6,7 @@ use App\Models\Membership;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\Product;
+use App\Models\Shipment;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,6 +21,7 @@ class DashboardRender extends Component
     public $sortDirection = 'desc';
     public $sortField = 'created_at';
     public $monthSelect, $monthSelectName, $yearSelect;
+    public $sum_day_products;
     public  $topProducts;
     public  $max_top_products;
     protected $paginationTheme = 'bootstrap';
@@ -49,6 +51,16 @@ class DashboardRender extends Component
 
 
         $this->productsDay = Product::join('shipments', 'shipments.idProduct', 'products.id')
+            ->join('orders', 'shipments.id_order', 'orders.id')
+            ->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"])
+            ->get();
+
+      
+
+     
+
+
+        Product::join('shipments', 'shipments.idProduct', 'products.id')
             ->join('orders', 'shipments.id_order', 'orders.id')
             ->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"])
             ->get();
@@ -106,23 +118,6 @@ class DashboardRender extends Component
                 $this->maxMemberships = $membership->n;
             }
         }
-
-
-        $this->topProducts = Product::where(function ($query) {
-            $query->where('title', 'like', '%' . $this->search . '%');
-        })->withCount('sales')
-            ->withSum('sales', 'price')
-            ->orderBy('sales_count', 'desc')
-            ->take(5)
-            ->get();
-
-      
-
-        $this->max_top_products = Product::where(function ($query) {
-            $query->where('title', 'like', '%' . $this->search . '%');
-        })->withCount('sales')
-            ->orderBy('sales_count', 'desc')
-            ->first();
     }
 
 
@@ -156,6 +151,20 @@ class DashboardRender extends Component
 
 
 
+
+        $this->topProducts = Product::where(function ($query) {
+            $query->where('title', 'like', '%' . $this->search . '%');
+        })->withCount('sales')
+            ->withSum('sales', 'price')
+            ->orderBy('sales_count', 'desc')
+            ->take(5)
+            ->get();
+
+        $this->max_top_products = Product::where(function ($query) {
+            $query->where('title', 'like', '%' . $this->search . '%');
+        })->withCount('sales')
+            ->orderBy('sales_count', 'desc')
+            ->first();
 
 
         return view('livewire.dashboard-render', compact('orders'));

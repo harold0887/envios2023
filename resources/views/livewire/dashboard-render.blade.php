@@ -244,85 +244,7 @@ $sumMemberships=0;
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-12 col-lg-6">
         <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header card-header-success card-header-icon">
-                <div class="card-icon">
-                  <i class="material-icons">trending_up</i>
-                </div>
-                <h4 class="card-title">TOP Ventas</h4>
-              </div>
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="table-responsive">
-                      <table class="table table-hover">
-                        <thead>
-                          <tr>
-
-                            <th><b>Producto</b></th>
-                            <th class="text-center"><b>Numero de ventas</b></th>
-                            <th class="text-end"><b>Total Vendido</b></th>
-
-                          </tr>
-                        </thead>
-                        <tbody class="h5 ">
-                          @foreach($topProducts as $product)
-
-                          @php
-
-                          $porcentaje= ($product->sales_count)*100/$max_top_products->sales_count;
-                          @endphp
-                          <tr>
-                            <td> {{$product->title}} </td>
-                            <td>
-
-                              <div class="row justify-content-center">
-                                <div class="col text-end align-self-md-center p-0 mr-2">
-                                  {{$product->sales_count}}
-                                </div>
-                                <div class="col align-self-md-center  p-0">
-                                  <div class="progress mt-3 ">
-                                    <div class="progress-bar bg-success" style="width:{{$porcentaje}}%" aria-valuemax="{{$max_top_products}}"></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </td>
-                            <td class="text-end"> {{ number_format( $product->sales_sum_price,2)}} </td>
-                          </tr>
-
-                          @endforeach
-
-
-                        </tbody>
-                      </table>
-
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-
-
-
-    </div>
-
-
-
-
-
-
-    <div class="row">
       <div class="col-md-12">
         <div class="card ">
           <div class="card-header card-header-info card-header-icon">
@@ -476,6 +398,89 @@ $sumMemberships=0;
         </div>
       </div>
     </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card ">
+              <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">trending_up</i>
+                </div>
+                <h4 class="card-title">Global Sales Top 10s </h4>
+              </div>
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="table-responsive table-sales">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th class="font-weight-bold">
+                              Imagen
+                            </th>
+                            <th class="font-weight-bold">
+                              Titulo
+                            </th>
+                            <th class="font-weight-bold">
+                              Ventas
+                            </th>
+                            <th class="font-weight-bold">
+                              Suma ventas
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @if( isset($topProducts) && $topProducts != null )
+
+                          @foreach($topProducts as $product)
+                          <tr>
+                            <td class=" py-1">
+
+                              <img src="{{ Storage::url($product->itemMain) }} " width="60">
+
+                            </td>
+                            <td>
+                              {{$product->title}}
+                            </td>
+                            <td>
+                              {{$product->sales_count}}
+                            </td>
+                            <td>
+                              {{ number_format( $product->sales_sum_price,2)}}
+                            </td>
+                          </tr>
+
+                          @endforeach
+
+                          @endif
+
+
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+
+
+
+
+
+    
 
 
 

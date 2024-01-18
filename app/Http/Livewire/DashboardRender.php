@@ -152,19 +152,13 @@ class DashboardRender extends Component
 
 
 
-        $this->topProducts = Product::where(function ($query) {
-            $query->where('title', 'like', '%' . $this->search . '%');
-        })->withCount('sales')
+        $this->topProducts = Product::withCount('sales')
             ->withSum('sales', 'price')
             ->orderBy('sales_count', 'desc')
-            ->take(5)
+            ->take(10)
             ->get();
 
-        $this->max_top_products = Product::where(function ($query) {
-            $query->where('title', 'like', '%' . $this->search . '%');
-        })->withCount('sales')
-            ->orderBy('sales_count', 'desc')
-            ->first();
+       
 
 
         return view('livewire.dashboard-render', compact('orders'));

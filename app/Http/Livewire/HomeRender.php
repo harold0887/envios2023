@@ -17,14 +17,12 @@ class HomeRender extends Component
     public $memberships;
     public $shipmentsProducts;
     public $img, $title, $price;
-    public $search = '';
+    public $search = '', $searchProduct = '';
 
 
     public function mount()
     {
-        $this->products = Product::orderBy('created_at', 'desc')
-            ->where('status', true)
-            ->get();
+
         $this->packages = Package::orderBy('title')
             ->where('status', true)
             ->get();
@@ -39,6 +37,12 @@ class HomeRender extends Component
     }
     public function render()
     {
+        $this->products = Product::orderBy('created_at', 'desc')
+            ->where(function ($query) {
+                $query->where('title', 'like', '%' . $this->searchProduct . '%');
+            })
+            ->where('status', true)
+            ->get();
         $orders = Order::where(function ($query) {
             $query->where('socialNetwork', 'like', '%' . $this->search . '%')
                 ->orWhere('email', 'like', '%' . $this->search . '%')
@@ -84,6 +88,6 @@ class HomeRender extends Component
 
     public function clearSearch()
     {
-        $this->reset(['search']);
+        $this->reset(['search', 'searchProduct']);
     }
 }

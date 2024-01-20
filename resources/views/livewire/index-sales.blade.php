@@ -20,22 +20,22 @@
                             <div class="row justify-content-between">
                                 <div class="col-12 col-md-8   align-self-md-center">
                                     <div class="input-group rounded ">
-                                    <input id="input-search" type="search" class="form-control px-3" placeholder="Buscar por orden, email, etc..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
+                                        <input id="input-search" type="search" class="form-control px-3" placeholder="Buscar por orden, email, etc..." wire:model.debounce.500ms='search' style="border-radius: 30px !important">
                                         @if ($search != '')
                                         <span class="input-group-text" style="cursor:pointer" wire:click="clearSearch()"><i class="material-icons mx-0 text-lg text-danger">close</i></span>
                                         @endif
                                     </div>
                                 </div>
 
-                              
+
                             </div>
                         </div>
 
 
 
-                       
-                        
-                       
+
+
+
 
 
                         <div class="col-12">

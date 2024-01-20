@@ -3,7 +3,7 @@
     <div class="content-main ">
         @include('includes.borders')
 
-        <div class="row ">
+        <!-- <div class="row ">
             <div class="col-12">
                 <div class="card  mb-2">
                     <div class="card-body row  py-0">
@@ -65,9 +65,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="row d-flex justify-content-center">
+        <div class="row d-flex justify-content-center mt-2">
             <div class="col-12">
 
                 <!--Accordion wrapper-->
@@ -90,8 +90,17 @@
                         <div id="collapse30" class="collapse show" role="tabpanel" aria-labelledby="heading30" data-parent="#accordionEx5">
                             <div class="card-body rgba-black-light white-text z-depth-1  px-1">
                                 <div class="form-row align-items-center">
+                                    <div class="col-12 p-0 m-0">
+                                        <div class="input-group">
+
+                                            <input type="search" class="form-control px-3 m-0" placeholder="Buscar productos por título" wire:model.debounce.500ms='searchProduct'>
+                                            @if ($searchProduct != '')
+                                            <span class="input-group-text" style="cursor:pointer" wire:click="clearSearch()"><i class="material-icons mx-0 text-lg text-danger">close</i></span>
+                                            @endif
+                                        </div>
+                                    </div>
                                     @foreach ($products as $product)
-                                    <div class="col-4 col-md-2 p-1">
+                                    <div class="col-4 col-md-2 p-1 mt-0">
                                         <div class=" rounded shadow">
                                             <div class="row ">
                                                 <div class="col-12">

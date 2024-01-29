@@ -27,8 +27,6 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{ asset('material') }}/demo/demo.css" rel="stylesheet" />
 
-    <!-- Chart mio -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -113,9 +111,6 @@
 
     <!-- iconos awesome -->
     <script src="https://kit.fontawesome.com/58c5330fd0.js" crossorigin="anonymous"></script>
-
-    <!-- Chart mio -->
-    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
     
      <!-- chartjs -->

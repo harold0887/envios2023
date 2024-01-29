@@ -147,13 +147,13 @@ $sumMemberships=0;
 
 
     <div class="row">
-    <div class="col-md-6">
+    <div class="col-12 col-lg-6">
         <div class="card">
           <div class="card-header card-header-icon card-header-rose">
             <div class="card-icon">
-              <i class="material-icons">insert_chart</i>
+              <i class="material-icons">ssid_chart</i>
             </div>
-            <h4 class="card-title">Reporte de ventas Anual
+            <h4 class="card-title">Reporte anual de ventas
               
             </h4>
           </div>
@@ -164,7 +164,7 @@ $sumMemberships=0;
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-12 col-lg-6">
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="card card-stats">
@@ -189,7 +189,7 @@ $sumMemberships=0;
                 <div class="card-icon">
                   <i class="fa-solid fa-chart-pie"></i>
                 </div>
-                <p class="card-category">Ventas del mes de {{$monthSelectName}} {{$yearSelect}}</p>
+                <p class="card-category">Ventas de {{$monthSelectName}} {{$yearSelect}}</p>
                 <h3 class="card-title">${{ number_format($salesMonth,2) }} </h3>
               </div>
               <div class="card-footer p-0">
@@ -221,7 +221,7 @@ $sumMemberships=0;
             <div class="card card-stats">
               <div class="card-header card-header-success card-header-icon">
                 <div class="card-icon">
-                  <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                <i class="material-icons">calendar_month</i>
                 </div>
                 <p class="card-category">Ventas del año</p>
                 <h3 class="card-title">${{ number_format($salesYear,2) }} </h3>
@@ -245,7 +245,7 @@ $sumMemberships=0;
             <div class="card card-stats">
               <div class="card-header card-header-info card-header-icon">
                 <div class="card-icon">
-                  <i class="fa-solid fa-square-full"></i>
+                <i class="material-icons">date_range</i>
                 </div>
                 <p class="card-category">Ventas por rango</p>
                 <h3 class="card-title">${{ number_format($salesRange,2) }} </h3>
@@ -264,7 +264,7 @@ $sumMemberships=0;
     </div>
 
     <div class="row">
-      <div class="col-12 col-lg-6">
+      <div class="col-12 col-md-6">
 
         <div class="row">
           <div class="col-md-12">
@@ -515,10 +515,7 @@ $sumMemberships=0;
     });
   </script>
 
-
-
-
-  /*Cargar el dom para emitir el evento y cargar datos de grafica*/
+  /*cargar datos de grafica*/
   <script>
     const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 

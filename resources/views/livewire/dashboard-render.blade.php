@@ -523,30 +523,50 @@ $sumMemberships=0;
       label: <?php echo $nameSubYear0; ?>,
       data: @json($valuesSubYear0),
       borderColor: 'rgba(248, 37, 37, 0.8)',
+      backgroundColor: 'rgba(248, 37, 37, 0.8)',
+      pointStyle: 'circle',
+ 
+      pointHoverRadius: 12,
       fill: false,
       tension: 0.1
+ 
     };
     const dataset1 = {
       label: <?php echo $nameSubYear1; ?>,
       data: @json($valuesSubYear1),
       borderColor: 'rgba(69, 248, 84, 0.8)',
+      backgroundColor: 'rgba(69, 248, 84, 0.8)',
+      pointStyle: 'circle',
+      
+      pointHoverRadius: 12,
       fill: false,
       tension: 0.1
+  
     };
 
     const dataset2 = {
       label: <?php echo $nameSubYear2; ?>,
       data: @json($valuesSubYear2),
       borderColor: 'rgba(69, 140, 248, 0.8)',
+      backgroundColor: 'rgba(69, 140, 248, 0.8)',
+      pointStyle: 'circle',
+   
+      pointHoverRadius: 12,
       fill: false,
       tension: 0.1
+    
     };
     const dataset3 = {
       label: <?php echo $nameSubYear3; ?>,
       data: @json($valuesSubYear3),
       borderColor: 'rgba(245, 40, 145, 0.8)',
+      backgroundColor: 'rgba(245, 40, 145, 0.8)',
+      pointStyle: 'circle',
+
+      pointHoverRadius: 12,
       fill: false,
       tension: 0.1
+   
     };
     const graph = document.querySelector("#grafica");
     const datas = {
@@ -556,6 +576,7 @@ $sumMemberships=0;
     const config = {
       type: 'line',
       data: datas,
+    
     };
     new Chart(graph, config);
   </script>

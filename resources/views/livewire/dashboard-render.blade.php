@@ -1,11 +1,8 @@
 @php
-$productUnique=[];
 $sumProducts=0;
 $sumPackages=0;
 $sumMemberships=0;
 @endphp
-
-
 <div class="content p-0">
   <div class="container-fluid">
     <div class="row">
@@ -148,8 +145,26 @@ $sumMemberships=0;
       </div>
     </div>
 
+
     <div class="row">
-      <div class="col-12 col-lg-6">
+    <div class="col-md-6">
+        <div class="card">
+          <div class="card-header card-header-icon card-header-rose">
+            <div class="card-icon">
+              <i class="material-icons">insert_chart</i>
+            </div>
+            <h4 class="card-title">Reporte de ventas Anual
+              
+            </h4>
+          </div>
+          <div class="card-body">
+
+            <canvas id="grafica"></canvas>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="card card-stats">
@@ -244,160 +259,131 @@ $sumMemberships=0;
             </div>
           </div>
         </div>
+      </div>
+      
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-lg-6">
+
         <div class="row">
-      <div class="col-md-12">
-        <div class="card ">
-          <div class="card-header card-header-info card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons"></i>
-            </div>
-            <h4 class="card-title">Detalle de ventas por día</h4>
-          </div>
-          <div class="card-body ">
-            <div class="row">
-              <div class="col-md-12">
+          <div class="col-md-12">
+            <div class="card ">
+              <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons"></i>
+                </div>
+                <h4 class="card-title">Detalle de ventas por día</h4>
+              </div>
+              <div class="card-body ">
+                <div class="card-body ">
+                  <div class="table-responsive table-sales mt-2">
+                    <table class="table">
+                      <thead>
+                        <tr>
 
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
+                          <th class="font-weight-bold">
+                            Titulo
+                          </th>
+                          <th class="font-weight-bold">
+                            Ventas
+                          </th>
+                          <th class="font-weight-bold">
+                            Suma
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
 
-                        <th><b>Producto</b></th>
-                        <th class="text-center"><b>Numero de ventas</b></th>
-                        <th class="text-end"><b>Total Vendido</b></th>
 
-                      </tr>
-                    </thead>
-                    <tbody class="h5 ">
-                      @foreach($products as $product)
-                      @foreach($productsDay as $item)
-                      @php
-                      if($product->id == $item->idProduct){
-                      $product->numVentas=$product->numVentas+1;
-                      $product->vTotal=$product->vTotal+$item->price;
-                      $sumProducts=$sumProducts+$item->price;
-                      }
-                      $porcentaje= $product->numVentas*100/$maxProducts;
-                      @endphp
-                      @endforeach
-                      @if($product->numVentas>0)
-                      <tr>
-                        <td> {{$product->title}} </td>
-                        <td>
-                          <div class="row">
-                            <div class="col-3 text-end">
-                              {{$product->numVentas}}
-                            </div>
-                            <div class="col">
-                              <div class="progress mt-3">
-                                <div class="progress-bar bg-success" style="width:{{$porcentaje}}%" aria-valuemax="{{$maxProducts}}"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-end"> {{ number_format( $product->vTotal,2)}} </td>
-                      </tr>
-                      @endif
-                      @endforeach
+                        @foreach($productsDay as $product)
+                        <tr>
+                          <td>
+                            {{$product->title}}
+                          </td>
+                          <td class="text-center">
+                            {{$product->sales_count}}
+                          </td>
+                          <td class="text-end">
+                            {{ number_format( $product->sales_sum_price,2)}}
+                          </td>
+                        </tr>
+                        @php
+                        $sumProducts=$sumProducts+$product->sales_sum_price
+                        @endphp
+                        @endforeach
 
-                      <tr class="font-weight-bold table-success">
-                        <td>Suma de ventas de productos</td>
-                        <td></td>
-                        <td class="text-end font-weight-bold">{{ number_format( $sumProducts,2)}} </td>
-                      </tr>
+                        <tr class="font-weight-bold table-success">
+                          <td>Ventas de productos</td>
+                          <td></td>
+                          <td class="text-end font-weight-bold">{{ number_format( $sumProducts,2)}} </td>
+                        </tr>
 
 
 
-                      @foreach($packages as $product)
-                      @foreach($packagesDay as $item)
-                      @php
-                      if($product->id == $item->idPackage){
-                      $product->numVentas=$product->numVentas+1;
-                      $product->vTotal=$product->vTotal+$item->price;
-                      $sumPackages=$sumPackages+$item->price;
-                      }
-                      $porcentaje= $product->numVentas*100/$maxPackages;
-                      @endphp
-                      @endforeach
-                      @if($product->numVentas>0)
-                      <tr>
-                        <td> {{$product->title}} </td>
-                        <td>
-                          <div class="row">
-                            <div class="col-3 text-end">
-                              {{$product->numVentas}}
-                            </div>
-                            <div class="col">
-                              <div class="progress mt-3">
-                                <div class="progress-bar bg-ligth" style="width:{{$porcentaje}}%" aria-valuemax="{{$maxPackages}}"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-end "> {{ number_format( $product->vTotal,2)}} </td>
-                      </tr>
-                      @endif
-                      @endforeach
-                      <tr class="font-weight-bold table-success">
-                        <td>Suma de ventas de paquetes</td>
-                        <td></td>
-                        <td class="text-end ">{{ number_format( $sumPackages,2)}} </td>
-                      </tr>
-                      @foreach($memberships as $product)
-                      @foreach($membershipsDay as $item)
-                      @php
-                      if($product->id == $item->idMembership){
-                      $product->numVentas=$product->numVentas+1;
-                      $product->vTotal=$product->vTotal+$item->price;
-                      $sumMemberships=$sumMemberships+$item->price;
-                      }
-                      $porcentaje= $product->numVentas*100/$maxMemberships;
-                      @endphp
-                      @endforeach
-                      @if($product->numVentas>0)
-                      <tr>
-                        <td> {{$product->title}} </td>
-                        <td>
-                          <div class="row">
-                            <div class="col-3 text-end">
-                              {{$product->numVentas}}
-                            </div>
-                            <div class="col ">
-                              <div class="progress mt-3">
-                                <div class="progress-bar bg-warning" style="width:{{$porcentaje}}%" aria-valuemax="{{$maxMemberships}}"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-end "> {{ number_format( $product->vTotal,2)}} </td>
-                      </tr>
-                      @endif
-                      @endforeach
-                      <tr class="font-weight-bold table-success">
-                        <td>Suma de ventas de membresias</td>
-                        <td></td>
-                        <td class="text-end font-weight-bold">{{ number_format( $sumMemberships,2)}} </td>
-                      </tr>
+                        @foreach($packagesDay as $product)
+                        <tr>
+                          <td>
+                            {{$product->title}}
+                          </td>
+                          <td class="text-center">
+                            {{$product->sales_count}}
+                          </td>
+                          <td class="text-end">
+                            {{ number_format( $product->sales_sum_price,2)}}
+                          </td>
+                        </tr>
+                        @php
+                        $sumPackages=$sumPackages+$product->sales_sum_price
+                        @endphp
+                        @endforeach
 
-                      <tr class="font-weight-bold text-success" style="border-top:solid 2px">
-                        <td>Total de ventas</td>
-                        <td></td>
-                        <td class="text-end ">{{ number_format( $sumMemberships+$sumPackages+$sumProducts,2)}} </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                        <tr class="font-weight-bold table-success">
+                          <td>Ventas de Paquetes</td>
+                          <td></td>
+                          <td class="text-end font-weight-bold">{{ number_format( $sumPackages,2)}} </td>
+                        </tr>
+                        @foreach($membershipsDay as $product)
+                        <tr>
+                          <td>
+                            {{$product->title}}
+                          </td>
+                          <td class="text-center">
+                            {{$product->sales_count}}
+                          </td>
+                          <td class="text-end">
+                            {{ number_format( $product->sales_sum_price,2)}}
+                          </td>
+                        </tr>
+                        @php
+                        $sumMemberships=$sumMemberships+$product->sales_sum_price
+                        @endphp
+                        @endforeach
+
+                        <tr class="font-weight-bold table-success">
+                          <td>Ventas de Membresías</td>
+                          <td></td>
+                          <td class="text-end font-weight-bold">{{ number_format( $sumMemberships,2)}} </td>
+                        </tr>
+
+                        <tr class="font-weight-bold text-success" style="border-top:solid 2px">
+                          <td>Total de ventas</td>
+                          <td></td>
+                          <td class="text-end ">{{ number_format( $sumMemberships+$sumPackages+$sumProducts,2)}} </td>
+                        </tr>
+
+
+
+
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
-
-
-
               </div>
-
             </div>
           </div>
         </div>
-      </div>
-    </div>
       </div>
       <div class="col-12 col-lg-6">
         <div class="row">
@@ -466,7 +452,7 @@ $sumMemberships=0;
               </div>
             </div>
           </div>
-          
+
         </div>
       </div>
 
@@ -480,7 +466,7 @@ $sumMemberships=0;
 
 
 
-    
+
 
 
 
@@ -500,8 +486,8 @@ $sumMemberships=0;
   @push('js')
 
   <!--  Data picker select range    -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- End Data picker select range    -->
@@ -530,19 +516,53 @@ $sumMemberships=0;
   </script>
 
 
+
+
+  /*Cargar el dom para emitir el evento y cargar datos de grafica*/
+  <script>
+    const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+
+    const dataset0 = {
+      label: <?php echo $nameSubYear0; ?>,
+      data: @json($valuesSubYear0),
+      borderColor: 'rgba(248, 37, 37, 0.8)',
+      fill: false,
+      tension: 0.1
+    };
+    const dataset1 = {
+      label: <?php echo $nameSubYear1; ?>,
+      data: @json($valuesSubYear1),
+      borderColor: 'rgba(69, 248, 84, 0.8)',
+      fill: false,
+      tension: 0.1
+    };
+
+    const dataset2 = {
+      label: <?php echo $nameSubYear2; ?>,
+      data: @json($valuesSubYear2),
+      borderColor: 'rgba(69, 140, 248, 0.8)',
+      fill: false,
+      tension: 0.1
+    };
+    const dataset3 = {
+      label: <?php echo $nameSubYear3; ?>,
+      data: @json($valuesSubYear3),
+      borderColor: 'rgba(245, 40, 145, 0.8)',
+      fill: false,
+      tension: 0.1
+    };
+    const graph = document.querySelector("#grafica");
+    const datas = {
+      labels: labels,
+      datasets: [dataset3, dataset2, dataset1, dataset0]
+    };
+    const config = {
+      type: 'line',
+      data: datas,
+    };
+    new Chart(graph, config);
+  </script>
+
   @endpush
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </div>

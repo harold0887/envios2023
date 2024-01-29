@@ -21,6 +21,17 @@ class Product extends Model
         return $this->belongsToMany(Package::class);
     }
 
+
+
+
+    //nuevas relaciones doc laravel
+
+    //Relacion muchos a muchos con Order
+    public function  orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class, 'shipments', 'idProduct', 'id_order');
+    }
+
     //Relacion con ventas, retorna las ventas del producto
     public function sales(): HasMany
     {

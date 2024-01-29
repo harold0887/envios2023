@@ -20,14 +20,19 @@ class Package extends Model
     }
 
 
+    //nuevas relacions doc laravel
+
+    //Relacion muchos a muchos con Order
+    public function  orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class, 'shipments', 'idPackage', 'id_order');
+    }
+
+
+
     //Relacion con ventas, retorna las ventas del paquete
     public function sales(): HasMany
     {
         return $this->hasMany(Shipment::class, 'idPackage', 'id');
     }
-
-
- 
-
-
 }

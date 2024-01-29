@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Membership;
+use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\Product;
-use App\Models\Shipment;
 use Livewire\Component;
+use App\Models\Shipment;
+use App\Models\Membership;
 use Livewire\WithPagination;
 
 class DashboardRender extends Component
@@ -23,101 +24,44 @@ class DashboardRender extends Component
     public $monthSelect, $monthSelectName, $yearSelect;
     public $sum_day_products;
     public  $topProducts;
+    public $day;
     public  $max_top_products;
+    public $nameSubYear0, $nameSubYear1, $nameSubYear2, $nameSubYear3;
+
+
+
+
     protected $paginationTheme = 'bootstrap';
 
-    protected $listeners = ['rangeSelect', 'rangeClear'];
+    protected $listeners = ['rangeSelect', 'rangeClear', 'load_data_chart'];
 
 
 
+    public function load_data_chart()
+    {
+
+
+
+
+
+
+        // $this->emit('setDataChart', [
+        //     'subYear1' => $valuesSubYear1,
+        //     'subYear2' => $valuesSubYear2,
+        // ]);
+
+
+    }
 
     public function mount()
     {
 
+
+
         $fecha = now();
-        $day = $fecha->format('Y-m-d');
+        $this->day = $fecha->format('Y-m-d');
         $this->monthSelect = $fecha->format('m');
         $this->yearSelect = $fecha->format('Y');
-
-
-        $this->products = Product::all();
-        $this->packages = Package::all();
-
-        $this->memberships = Membership::all();
-
-        $this->salesDay = Order::whereBetween('created_at', [$day . " 00:00:00", $day . " 23:59:59"])
-            ->sum('amount');
-
-
-
-        $this->productsDay = Product::join('shipments', 'shipments.idProduct', 'products.id')
-            ->join('orders', 'shipments.id_order', 'orders.id')
-            ->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"])
-            ->get();
-
-      
-
-     
-
-
-        Product::join('shipments', 'shipments.idProduct', 'products.id')
-            ->join('orders', 'shipments.id_order', 'orders.id')
-            ->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"])
-            ->get();
-
-
-
-        $this->packagesDay = Package::join('shipments', 'shipments.idPackage', 'packages.id')
-            ->join('orders', 'shipments.id_order', 'orders.id')
-            ->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"])
-            ->get();
-
-
-
-        $this->membershipsDay = Membership::join('shipments', 'shipments.idMembership', 'memberships.id')
-            ->join('orders', 'shipments.id_order', 'orders.id')
-            ->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"])
-            ->get();
-
-
-        $this->range = now()->format('Y-m-d') . '-' . now()->format('Y-m-d');
-        $this->range2 = now()->format('Y-m-d') . '-' . now()->format('Y-m-d');
-
-
-
-
-        //sacar el maximo de ventas
-        foreach ($this->products as $product) {
-            foreach ($this->productsDay as $item) {
-                if ($product->id == $item->idProduct) {
-                    $product->n = $product->n + 1;
-                }
-            }
-            if ($this->maxProducts < $product->n) {
-                $this->maxProducts = $product->n;
-            }
-        }
-
-        foreach ($this->packages as $package) {
-            foreach ($this->packagesDay as $item) {
-                if ($package->id == $item->idPackage) {
-                    $package->n = $package->n + 1;
-                }
-            }
-            if ($this->maxPackages < $package->n) {
-                $this->maxPackages = $package->n;
-            }
-        }
-        foreach ($this->memberships as $membership) {
-            foreach ($this->membershipsDay as $item) {
-                if ($membership->id == $item->idMembership) {
-                    $membership->n = $membership->n + 1;
-                }
-            }
-            if ($this->maxMemberships < $membership->n) {
-                $this->maxMemberships = $membership->n;
-            }
-        }
     }
 
 
@@ -125,6 +69,7 @@ class DashboardRender extends Component
     public function render()
     {
 
+        $day = $this->day;
 
         $orders = Order::where(function ($query) {
             $query->where('socialNetwork', 'like', '%' . $this->search . '%')
@@ -134,20 +79,61 @@ class DashboardRender extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(100);
 
-
         $this->salesMonth = Order::whereMonth('created_at', $this->monthSelect)
             ->where(function ($query) {
                 $query->whereYear('created_at', '=', $this->yearSelect);
             })
             ->sum('amount');
 
-
         $this->salesYear = Order::whereYear('created_at', $this->yearSelect)->sum('amount');
 
-        $this->salesRange = Order::whereBetween('created_at', [$this->rangeStart . " 00:00:01", $this->rangeEnd . " 23:59:59"])
+        $this->salesRange = Order::whereBetween('created_at', [$this->rangeStart . " 00:00:00", $this->rangeEnd . " 23:59:59"])
             ->sum('amount');
 
         $this->setName($this->monthSelect);
+
+
+        //Obtener todas las ventas del día (productos, paquetes y membresías)
+        $this->salesDay = Order::whereBetween('created_at', [$day . " 00:00:00", $day . " 23:59:59"])
+            ->sum('amount');
+
+
+        //Obtener todas las ventas de productos del día con el numero de ventas y la suma de ventas de cada producto
+        $this->productsDay = Product::whereHas('orders', function ($query) use ($day) {
+            $query->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"]);
+        })
+            ->withCount(['sales' => function ($query)  use ($day) {
+                $query->whereBetween('created_at', [$day . " 00:00:00", $day . " 23:59:59"]);
+            }])
+            ->withSum(['sales' => function ($query)  use ($day) {
+                $query->whereBetween('created_at', [$day . " 00:00:00", $day . " 23:59:59"]);
+            }], 'price')
+            ->get();
+
+        //Obtener todas las ventas de paquetes del día con el numero de ventas y la suma de ventas de cada producto
+        $this->packagesDay = Package::whereHas('orders', function ($query) use ($day) {
+            $query->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"]);
+        })
+            ->withCount(['sales' => function ($query)  use ($day) {
+                $query->whereBetween('created_at', [$day . " 00:00:00", $day . " 23:59:59"]);
+            }])
+            ->withSum(['sales' => function ($query)  use ($day) {
+                $query->whereBetween('created_at', [$day . " 00:00:00", $day . " 23:59:59"]);
+            }], 'price')
+            ->get();
+
+
+        //Obtener todas las ventas de membresías del día con el numero de ventas y la suma de ventas de cada producto
+        $this->membershipsDay = Membership::whereHas('orders', function ($query) use ($day) {
+            $query->whereBetween('orders.created_at', [$day . " 00:00:00", $day . " 23:59:59"]);
+        })
+            ->withCount(['sales' => function ($query)  use ($day) {
+                $query->whereBetween('created_at', [$day . " 00:00:00", $day . " 23:59:59"]);
+            }])
+            ->withSum(['sales' => function ($query)  use ($day) {
+                $query->whereBetween('created_at', [$day . " 00:00:00", $day . " 23:59:59"]);
+            }], 'price')
+            ->get();
 
 
 
@@ -158,10 +144,56 @@ class DashboardRender extends Component
             ->take(10)
             ->get();
 
-       
+
+        //enviar data de grafica
+        $valuesSubYear0 = [];
+        $valuesSubYear1 = [];
+        $valuesSubYear2 = [];
+        $valuesSubYear3 = [];
 
 
-        return view('livewire.dashboard-render', compact('orders'));
+
+        for ($i = 12; $i > 0; $i--) {
+
+            $sumMonthSubYear0 = Order::whereMonth('created_at', Carbon::now()->subMonths($i))
+                ->where(function ($query) {
+                    $query->whereYear('created_at', '=', Carbon::now()->format("Y"));
+                })->sum('amount');
+
+            array_push($valuesSubYear0, $sumMonthSubYear0);
+
+            $sumMonthSubYear1 = Order::whereMonth('created_at', Carbon::now()->subMonths($i))
+                ->where(function ($query) {
+                    $query->whereYear('created_at', '=', Carbon::now()->subYear(1)->format("Y"));
+                })->sum('amount');
+
+            array_push($valuesSubYear1, $sumMonthSubYear1);
+
+            $sumMonthSubYear2 = Order::whereMonth('created_at', Carbon::now()->subMonths($i))
+                ->where(function ($query) {
+                    $query->whereYear('created_at', '=', Carbon::now()->subYear(2)->format("Y"));
+                })->sum('amount');
+            array_push($valuesSubYear2, $sumMonthSubYear2);
+            $sumMonthSubYear3 = Order::whereMonth('created_at', Carbon::now()->subMonths($i))
+                ->where(function ($query) {
+                    $query->whereYear('created_at', '=', Carbon::now()->subYear(3)->format("Y"));
+                })->sum('amount');
+
+            array_push($valuesSubYear3, $sumMonthSubYear3);
+        }
+
+        $this->nameSubYear0 = Carbon::now()->format("Y");
+        $this->nameSubYear1 = Carbon::now()->subYear(1)->format("Y");
+        $this->nameSubYear2 = Carbon::now()->subYear(2)->format("Y");
+        $this->nameSubYear3 = Carbon::now()->subYear(3)->format("Y");
+
+
+
+
+      
+
+
+        return view('livewire.dashboard-render', compact('orders', 'valuesSubYear1', 'valuesSubYear2', 'valuesSubYear3', 'valuesSubYear0'));
     }
 
 

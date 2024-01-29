@@ -73,7 +73,7 @@ Livewire.on("confirmResend", function ($message) {
         confirmButtonText: "Si, renviar!",
     }).then((result) => {
         if (result.value) {
-            Livewire.emit("resend",$message["id"],$message["condeSend"]);
+            Livewire.emit("resend", $message["id"], $message["condeSend"]);
         }
     });
 });
@@ -134,3 +134,4 @@ function confirmDelete() {
         });
     });
 }
+

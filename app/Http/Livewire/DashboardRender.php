@@ -153,34 +153,36 @@ class DashboardRender extends Component
 
 
 
-        for ($i = 12; $i > 0; $i--) {
+        for ($i = 1; $i <= 12; $i++) {
 
-            $sumMonthSubYear0 = Order::whereMonth('created_at', Carbon::now()->subMonths($i))
+            $sumMonthSubYear0 = Order::whereMonth('created_at', $i)
                 ->where(function ($query) {
                     $query->whereYear('created_at', '=', Carbon::now()->format("Y"));
                 })->sum('amount');
 
             array_push($valuesSubYear0, $sumMonthSubYear0);
 
-            $sumMonthSubYear1 = Order::whereMonth('created_at', Carbon::now()->subMonths($i))
+            $sumMonthSubYear1 = Order::whereMonth('created_at', $i)
                 ->where(function ($query) {
                     $query->whereYear('created_at', '=', Carbon::now()->subYear(1)->format("Y"));
                 })->sum('amount');
 
             array_push($valuesSubYear1, $sumMonthSubYear1);
 
-            $sumMonthSubYear2 = Order::whereMonth('created_at', Carbon::now()->subMonths($i))
+            $sumMonthSubYear2 = Order::whereMonth('created_at', $i)
                 ->where(function ($query) {
                     $query->whereYear('created_at', '=', Carbon::now()->subYear(2)->format("Y"));
                 })->sum('amount');
             array_push($valuesSubYear2, $sumMonthSubYear2);
-            $sumMonthSubYear3 = Order::whereMonth('created_at', Carbon::now()->subMonths($i))
+            $sumMonthSubYear3 = Order::whereMonth('created_at', $i)
                 ->where(function ($query) {
                     $query->whereYear('created_at', '=', Carbon::now()->subYear(3)->format("Y"));
                 })->sum('amount');
 
             array_push($valuesSubYear3, $sumMonthSubYear3);
         }
+
+       
 
         $this->nameSubYear0 = Carbon::now()->format("Y");
         $this->nameSubYear1 = Carbon::now()->subYear(1)->format("Y");
@@ -190,7 +192,7 @@ class DashboardRender extends Component
 
 
 
-      
+
 
 
         return view('livewire.dashboard-render', compact('orders', 'valuesSubYear1', 'valuesSubYear2', 'valuesSubYear3', 'valuesSubYear0'));

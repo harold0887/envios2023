@@ -6,7 +6,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Advent+Pro:wght@600&display=swap");
 
 
-
 /* ---------------------------------------------------
     nuevos estilos
 ----------------------------------------------------- */
@@ -123,9 +122,10 @@
 }
 
 .logo-main {
-    width: 160px;
-    position: absolute;
-}
+    width: 100px;
+    position: relative;
+    top: -5px !important;
+  }
 
 @media (max-width: 991px) {
     /* ocultar el sidebar  */

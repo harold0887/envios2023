@@ -36,7 +36,7 @@ Queda estrictamente prohibido:
 Te invitamos a visitar nuestra nueva página web donde podrás encontrar material gratuito y nuestras novedades de apoyo para la enseñanza de los peques con actividades divertidas.👇🏼
 
 <br>
-<a href="https://materialdidacticomaca.com/tienda/productos" target="_blank">Tienda en linea</a>
+<a href="https://materialdidacticomaca.com" target="_blank">Tienda en línea</a>
 
 <br>
 @endcomponent

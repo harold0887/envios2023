@@ -47,16 +47,16 @@ class CartRender extends Component
     {
 
         return view('livewire.cart-render')
-            ->extends('layouts.app', [
-                'class' => 'off-canvas-sidebar',
-                'classPage' => 'login-page',
-                'activePage' => 'cart
-                ',
-                'title' => 'Carrito',
-                'navbarClass' => 'text-primary'
-            ])
+        ->extends('layouts.app', [
+            'class' => 'off-canvas-sidebar',
+            'classPage' => 'login-page',
+            'activePage' => 'cart',
+            'title' => "Carrito",
+            'navbarClass' => 'text-primary',
+            'background' => '#eee !important'
+        ])
 
-            ->section('content');
+        ->section('content');
     }
     public function remove($id, $model)
     {

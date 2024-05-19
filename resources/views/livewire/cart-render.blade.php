@@ -1,9 +1,8 @@
-<div class="container-fluid  p-0 ">
+<div class="container bg-white shadow my-1 rounded ">
 
-
-    <div class="content-main">
+<div class="content-main " >
         @include('includes.spinner-livewire')
-        @include('includes.borders')
+
 
         <div class="row justify-content-center p-3">
 
@@ -141,7 +140,7 @@
             @endif
 
         </div>
-        @include('includes.borders')
+
 
     </div>
 </div>

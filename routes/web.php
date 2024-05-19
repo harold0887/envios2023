@@ -29,10 +29,6 @@ use App\Http\Controllers\AdminMembershipController;
 */
 
 
-Route::get('/foo', function () {
-  Artisan::call('storage:link');
-   echo "Link done";
-});
 
 
 Auth::routes();
@@ -59,7 +55,37 @@ Route::group(['middleware' => ['auth']], function () {
 
 
   Route::resource('payments', EgresosController::class);
-  route::get('/balance',Balance::class)->name('balance');
-  route::get('/presupuesto',Presupuesto::class)->name('presupuesto');
-  route::get('/membresias',MembershipList::class)->name('membresias');
+  route::get('/balance', Balance::class)->name('balance');
+  route::get('/presupuesto', Presupuesto::class)->name('presupuesto');
+  route::get('/membresias', MembershipList::class)->name('membresias');
+
+  Route::get('/foo', function () {
+    Artisan::call('storage:link');
+    echo "Link done";
+  });
+
+
+  // Clear application cache:
+  Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    return 'Application cache has been cleared';
+  });
+
+  //Clear route cache:
+  Route::get('/route-cache', function () {
+    Artisan::call('route:cache');
+    return 'Routes cache has been cleared';
+  });
+
+  //Clear config cache:
+  Route::get('/config-cache', function () {
+    Artisan::call('config:cache');
+    return 'Config cache has been cleared';
+  });
+
+  // Clear view cache:
+  Route::get('/view-clear', function () {
+    Artisan::call('view:clear');
+    return 'View cache has been cleared';
+  });
 });

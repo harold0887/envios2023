@@ -1,7 +1,7 @@
 <div class="container-fluid  p-0 ">
 
     <div class="content-main ">
-        @include('includes.borders')
+
 
         <div class="row my-3 rounded mx-1 shadow bg-white">
             <div class="col-12 col-md-5">
@@ -120,7 +120,6 @@
         @endif
 
 
-        @include('includes.borders')
 
 
 

@@ -1,10 +1,13 @@
-<div class="row justify-content-center">
-
-    <div class="col-2" style="height:7px; background-color:#FF2D82"></div>
-    <div class="col-2" style="height:7px; background-color:#FCC552"></div>
-    <div class="col-2" style="height:7px; background-color:#AAE600"></div>
-    <div class="col-2" style="height:7px; background-color:#52CFDD"></div>
-    <div class="col-2 " style="height:7px; background-color:#A578DA"></div>
-    <div class="col-2" style="height:7px; background-color:#FF0000"></div>
-
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="d-inline  border-color bg-danger"></div>
+        <div class="d-inline  border-color " style="background-color: #FF9900;"></div>
+        <div class="d-inline  border-color bg-warning"></div>
+        <div class="d-inline  border-color " style="background-color: #AAE600;"></div>
+        <div class="d-inline  border-color bg-info"></div>
+        <div class="d-inline  border-color " style="background-color: #A578DA;"></div>
+        <div class="d-inline  border-color bg-primary"></div>
+        <div class="d-inline  border-color bg-secondary"></div>
+        <div class="d-inline  border-color bg-light"></div>
+    </div>
 </div>

@@ -13,7 +13,7 @@
 <div class="container-fluid  p-0 ">
 
     <div class="content-main ">
-        @include('includes.borders')
+      
 
         <div class="row">
             <div class="col-12">
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-        @include('includes.borders')
+     
 
     </div>
 

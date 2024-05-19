@@ -1,5 +1,5 @@
-<nav id="{{$navbarClass}}" class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top {{$navbarClass}}">
-  <div class="container-fluid px-0">
+<nav id="{{$navbarClass}}" class="navbar fixed-top sticky-lg-top navbar-expand-lg {{$navbarClass}} navbar-transparent  mb-0" style="background-color: {{$background}} ;  ">
+  <div class="container-fluid">
     <div class="navbar-wrapper">
       <a class="navbar-brand px-0 mx-0" style="padding: 0px !important">
 

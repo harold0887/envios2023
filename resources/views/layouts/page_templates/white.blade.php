@@ -1,12 +1,10 @@
 @include('includes.navbar')
-<div class="wrapper wrapper-full-page border">
+@include('includes.borders')
+<div class="wrapper wrapper-full-page ">
 
-
-
- 
 
   @yield('content')
-
-  @include('includes.footer')
-
+  @include('includes.alert-error')
 </div>
+@include('includes.borders')
+@include('includes.footer')

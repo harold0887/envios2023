@@ -1,7 +1,7 @@
 <div class="container-fluid  p-0 ">
 
     <div class="content-main ">
-        @include('includes.borders')
+
 
         <div class="row mt-3 rounded mx-1 shadow bg-white">
             <div class="col-6 col-md-3">
@@ -148,7 +148,7 @@
         </div>
 
 
-        @include('includes.borders')
+        
 
 
 

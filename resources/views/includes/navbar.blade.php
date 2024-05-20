@@ -1,4 +1,4 @@
-<nav id="{{$navbarClass}}" class="navbar fixed-top sticky-lg-top navbar-expand-lg {{$navbarClass}} navbar-transparent  mb-0" style="background-color: {{$background}} ;  ">
+<nav id="{{$navbarClass}}" class="navbar fixed-top sticky-lg-top navbar-expand-lg {{$navbarClass}} navbar-transparent  mb-0" style="background-color: {{isset($background) ? $background :'' }} ;  ">
   <div class="container-fluid">
     <div class="navbar-wrapper">
       <a class="navbar-brand px-0 mx-0" style="padding: 0px !important">

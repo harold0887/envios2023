@@ -51,7 +51,7 @@
             </i> Egresos
           </a>
         </li>
-        <li class="nav-item{{ $activePage == 'balance' ? ' active' : '' }}">
+        <!-- <li class="nav-item{{ $activePage == 'balance' ? ' active' : '' }}">
           <a href="{{ route('balance') }}" class="nav-link text-primary">
             <i class="material-icons">
               currency_exchange
@@ -64,7 +64,7 @@
               card_membership
             </i> Membresias
           </a>
-        </li>
+        </li> -->
         <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
           <a href="{{ route('dashboard') }}" class="nav-link text-primary">
             <i class="material-icons">dashboard</i> dashboard

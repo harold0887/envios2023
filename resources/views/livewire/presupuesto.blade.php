@@ -1,4 +1,4 @@
-<div class="container-fluid  p-0 ">
+<div class="container  ">
 
     <div class="content-main ">
 
@@ -93,7 +93,7 @@
                                     <tr class="table-secondary rounded">
                                         <th><b>Categoria</b></th>
                                         <th><b>Descripcion</b></th>
-                                        <th><b>Presupuesto</b></th>
+                                        <th class="text-end"><b>Presupuesto</b></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -148,7 +148,7 @@
         </div>
 
 
-        
+
 
 
 

@@ -8,17 +8,16 @@
 ])
 
 @section('content')
-<div class="container">
-
+<div class="container" style="padding-top: 0 !important;">
     <div class="row">
-        <div class="col-lg-5 col-md-6 col-sm-8 ml-auto mr-auto">
+        <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
             <form class="form" method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <div class="card card-login card-primary card-hidden mb-3 border border-primary">
-                    <div class="card-header card-header-primary text-center  justify-center ">
-
-                        <h4 class="card-title "><strong>Ingresa con tu cuenta</strong></h4>
+                <div class="card card-login card-primary card-hidden mb-3 ">
+                    <div class="card-header card-header-primary d-flex align-items-center justify-content-center ">
+                        <i class="material-icons mr-2">fingerprint</i>
+                        <h4 class="card-title"><strong>Ingresa con tu email</strong></h4>
                     </div>
 
                     <div class="card-body">
@@ -29,7 +28,7 @@
                                         <i class="material-icons">email</i>
                                     </span>
                                 </div>
-                                <input type="email" class="form-control err-email" id="exampleEmails" name="email" placeholder="{{ __('Email...') }}" value="{{ old('email', '') }}" required>
+                                <input type="email" class="form-control err-email" id="exampleEmails" name="email" placeholder="{{ __('Email') }}" value="{{ old('email') }}" required>
                                 @include('alerts.feedback', ['field' => 'email'])
                             </div>
                         </span>
@@ -40,13 +39,13 @@
                                         <i class="material-icons">lock_outline</i>
                                     </span>
                                 </div>
-                                <input type="password" class="form-control" id="examplePassword" name="password" placeholder="{{ __('Password...') }}" value="" required>
+                                <input type="password" class="form-control" id="examplePassword" name="password" placeholder="Contraseña" required>
                                 @include('alerts.feedback', ['field' => 'password'])
                             </div>
                         </span>
                         <div class="form-check mr-auto ml-3 mt-3">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} aria-checked="true"> {{ __('Remember me') }}
+                                <input class="form-check-input" type="checkbox" name="remember" {{ old('remember') ? 'checked' : 'checked' }}> {{ __('Remember me') }}
                                 <span class="form-check-sign">
                                     <span class="check"></span>
                                 </span>
@@ -54,26 +53,25 @@
                         </div>
                     </div>
                     <div class="card-footer justify-content-center">
-                        <button type="submit" class="btn btn-primary  btn-lg" id="btn-login-modal">
-                            INGRESAR
+                        <button type="submit" class="btn btn-primary  btn-round mt-4 btn-lg">
+                            Ingresar
                         </button>
                     </div>
-                 
+
+                    <div class="row px-3">
+                        <div class="col-12 text-center my-2 border-top">
+                            @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}">
+                                <small class="text-muted fw-bold text-muted">{{ __('Forgot password') }} ? click aqui.</small>
+                            </a>
+                            @endif
+                        </div>
+                    </div>
 
 
                 </div>
 
             </form>
-            <div class="row">
-                <div class="col-6">
-                    @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}" class="text-light">
-                        <small>{{ __('Forgot password') }} ?</small>
-                    </a>
-                    @endif
-                </div>
-
-            </div>
         </div>
     </div>
 </div>

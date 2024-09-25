@@ -1,4 +1,4 @@
-<div class="container-fluid  p-0 ">
+<div class="container">
 
     <div class="content-main ">
 

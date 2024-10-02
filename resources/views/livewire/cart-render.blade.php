@@ -1,6 +1,6 @@
 <div class="container bg-white shadow my-1 rounded ">
 
-<div class="content-main " >
+    <div class="content-main ">
         @include('includes.spinner-livewire')
 
 
@@ -72,7 +72,7 @@
                         <small class=" text-danger"> {{ $message }} </small>
                         @enderror
                     </div>
-                    <div class="form-group col-12 pt-3">
+                    <!-- <div class="form-group col-12 pt-3">
                         <select class="form-control" name="fop" wire:model="fop">
                             <option selected value="">Selecciona pago...</option>
                             <option value="Transferencia">Transferencia</option>
@@ -114,7 +114,7 @@
                         @if ($payment)
                         <img class="w-100 rounded shadow" src="{{ $payment->temporaryUrl() }}">
                         @endif
-                    </div>
+                    </div> -->
                     <div class="col-12 text-center pt-5">
                         <div wire:loading.remove>
                             <button class="btn btn-primary " wire:click="submit">

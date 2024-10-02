@@ -11,6 +11,7 @@ class Presupuesto extends Component
     public $year = '';
     public $month = '';
 
+
     //public $expenses = '';
     public $amount = '';
     public $category = '';
@@ -19,7 +20,7 @@ class Presupuesto extends Component
     public function mount()
     {
         $this->month = date("m");
-        $this->mesEsp = date("m");
+
         $this->year = date("Y");
     }
     public function render()
@@ -48,18 +49,20 @@ class Presupuesto extends Component
                     ->whereYear('movimientos.created_at', '=', $this->year);
             })
             ->get();
-        return view('livewire.presupuesto',
-        compact('payments', 'presupuestoCategorias', 'categories','sumPresupuesto'))
-        ->extends('layouts.app', [
-            'class' => 'off-canvas-sidebar',
-            'classPage' => 'login-page',
-            'activePage' => 'presupuesto',
-            'title' =>"Presupuesto",
-            'pageBackground' => asset("material").'/img/login.jpg',
-            'navbarClass'=>'text-primary',
-            'background'=>'#eee !important'
+        return view(
+            'livewire.presupuesto',
+            compact('payments', 'presupuestoCategorias', 'categories', 'sumPresupuesto')
+        )
+            ->extends('layouts.app', [
+                'class' => 'off-canvas-sidebar',
+                'classPage' => 'login-page',
+                'activePage' => 'presupuesto',
+                'title' => "Presupuesto",
+                'pageBackground' => asset("material") . '/img/login.jpg',
+                'navbarClass' => 'text-primary',
+                'background' => '#eee !important'
             ])
-            
+
             ->section('content');
     }
 
@@ -128,6 +131,8 @@ class Presupuesto extends Component
             $this->emit('success-auto-close', [
                 'message' => 'El presupuesto se creo con éxito',
             ]);
+
+            $this->reset('amount', 'category');
         } catch (\Throwable $e) {
             $this->emit('error', [
                 'message' => 'Error al guardar el presupuesto - ' . $e->getMessage(),
@@ -138,7 +143,7 @@ class Presupuesto extends Component
     public function clearFilters()
     {
         $this->month = date("m");
-        $this->mesEsp = date("m");
+
         $this->year = date("Y");
     }
 }

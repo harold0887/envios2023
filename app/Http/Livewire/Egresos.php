@@ -5,12 +5,19 @@ namespace App\Http\Livewire;
 use App\Models\Payment;
 use Livewire\Component;
 use App\Models\Category;
+use Livewire\WithPagination;
 
 class Egresos extends Component
 {
     public $year = '';
     public $month = '';
     public $mesEsp = '';
+
+    use WithPagination;
+    public $search = '';
+    protected $paginationTheme = 'bootstrap';
+    public $sortDirection = 'desc';
+    public $sortField = 'created_at';
 
     public function mount()
     {
@@ -68,7 +75,7 @@ class Egresos extends Component
                 $query->whereMonth('movimientos.created_at', '=', $this->month)
                     ->whereYear('movimientos.created_at', '=', $this->year);
             })
-            ->select('movimientos.*','categories.name as category')
+            ->select('movimientos.*', 'categories.name as category')
             ->orderBy('movimientos.created_at', 'asc')
             ->get();
 
@@ -92,7 +99,18 @@ class Egresos extends Component
                 $query->whereMonth('movimientos.created_at', '=', $this->month)
                     ->whereYear('movimientos.created_at', '=', $this->year);
             })->get();
-        return view('livewire.egresos', compact('categories', 'payments', 'presupuesto', 'egresos', 'presupuestoCategorias'));
+
+
+        $gastos = Payment::whereMonth('movimientos.created_at', '=', $this->month)
+            ->whereYear('movimientos.created_at', '=', $this->year)
+            ->where('tipo_egreso', 1)
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->get();
+
+
+
+
+        return view('livewire.egresos', compact('categories', 'payments', 'presupuesto', 'egresos', 'presupuestoCategorias', 'gastos'));
     }
 
 
@@ -106,5 +124,17 @@ class Egresos extends Component
     {
         $this->month = date("m");
         $this->year = date("Y");
+    }
+    //sort
+    public function setSort($field)
+    {
+
+        $this->sortField = $field;
+
+        if ($this->sortDirection == 'desc') {
+            $this->sortDirection = 'asc';
+        } else {
+            $this->sortDirection = 'desc';
+        }
     }
 }

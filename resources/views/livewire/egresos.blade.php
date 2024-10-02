@@ -141,6 +141,68 @@
             </div>
             @endif
         </div>
+        <div class="row shadow">
+            @if (isset($gastos) && $gastos->count() > 0)
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="cursor:pointer" wire:click="setSort('created_at')">
+                                @if($sortField=='created_at')
+                                @if($sortDirection=='asc')
+                                <i class="fa-solid fa-arrow-down-a-z"></i>
+                                @else
+                                <i class="fa-solid fa-arrow-up-z-a"></i>
+                                @endif
+                                @else
+                                <i class="fa-solid fa-sort mr-1"></i>
+                                @endif
+                                Fecha
+                            </th>
+                            <th style="cursor:pointer" wire:click="setSort('cantidad')">
+                                @if($sortField=='cantidad')
+                                @if($sortDirection=='asc')
+                                <i class="fa-solid fa-arrow-down-a-z"></i>
+                                @else
+                                <i class="fa-solid fa-arrow-up-z-a"></i>
+                                @endif
+                                @else
+                                <i class="fa-solid fa-sort mr-1"></i>
+                                @endif
+                                Cantidad
+                            </th>
+                            <th style="cursor:pointer" wire:click="setSort('concepto')">
+                                @if($sortField=='concepto')
+                                @if($sortDirection=='asc')
+                                <i class="fa-solid fa-arrow-down-a-z"></i>
+                                @else
+                                <i class="fa-solid fa-arrow-up-z-a"></i>
+                                @endif
+                                @else
+                                <i class="fa-solid fa-sort mr-1"></i>
+                                @endif
+                                Concepto
+                            </th>
+                            <th>Categoria</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($gastos as $gasto)
+                        <tr>
+                            <td>{{date_format($gasto->created_at, 'd-M-Y g:i A')}}</td>
+
+                            <td>{{ $gasto->cantidad }} </td>
+                            <td>{{ $gasto->concepto }} </td>
+                            <td>{{ $gasto->category->name }} </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+
+            @endif
+        </div>
 
 
 

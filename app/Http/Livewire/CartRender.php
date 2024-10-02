@@ -28,15 +28,15 @@ class CartRender extends Component
     protected $rules = [
         'email' => 'required|string|email',
         'socialNetwork' => 'required|string',
-        'fop' => 'required',
-        'payment' => 'required|image',
+        //'fop' => 'required',
+        //'payment' => 'required|image',
 
     ];
     protected $messages = [
         'email.required' => 'El correo electrónico no puede estar vacío.',
         'socialNetwork.required' => 'El WhatsApp o Facebook no puede estar vacío',
-        'fop.required' => 'Seleccione una opcion correcta',
-        'payment.required' => 'Debe cargar el comprobante de pago',
+        //'fop.required' => 'Seleccione una opcion correcta',
+        //'payment.required' => 'Debe cargar el comprobante de pago',
     ];
     public function mount()
     {
@@ -47,16 +47,16 @@ class CartRender extends Component
     {
 
         return view('livewire.cart-render')
-        ->extends('layouts.app', [
-            'class' => 'off-canvas-sidebar',
-            'classPage' => 'login-page',
-            'activePage' => 'cart',
-            'title' => "Carrito",
-            'navbarClass' => 'text-primary',
-            'background' => '#eee !important'
-        ])
+            ->extends('layouts.app', [
+                'class' => 'off-canvas-sidebar',
+                'classPage' => 'login-page',
+                'activePage' => 'cart',
+                'title' => "Carrito",
+                'navbarClass' => 'text-primary',
+                'background' => '#eee !important'
+            ])
 
-        ->section('content');
+            ->section('content');
     }
     public function remove($id, $model)
     {
@@ -90,7 +90,7 @@ class CartRender extends Component
             $this->validate([
                 'email' => 'required|string|email',
                 'socialNetwork' => 'required|string',
-                'fop' => 'required',
+                //'fop' => 'required',
             ]);
         }
 
@@ -100,8 +100,8 @@ class CartRender extends Component
                 'amount' => \Cart::getTotal(),
                 'socialNetwork' => $this->socialNetwork,
                 'email' => $this->email,
-                'receiptPayment' => isset($this->payment) ? $this->payment->store('public/payments'):'',
-                'fop' => $this->fop,
+                'receiptPayment' => isset($this->payment) ? $this->payment->store('public/payments') : '',
+                'fop' => '-',
             ]);
             $this->folio = "MACA-" . $newOrder->id;
             $newOrder->update([
@@ -215,7 +215,5 @@ class CartRender extends Component
 
         $this->web == false ? $this->web = true : $this->web = false;
         $this->web == false ? $this->fop = '' : $this->fop = 'Mercado Pago';
-
-       
     }
 }

@@ -27,31 +27,34 @@ class Presupuesto extends Component
     {
         $categories = Category::orderBy('categories.name', 'asc')->get();
 
-        $payments = Payment::join('categories', 'movimientos.categories_id', 'categories.id')
-            ->where('tipo_egreso', 1)
-            ->where(function ($query) {
-                $query->whereMonth('movimientos.created_at', '=', $this->month)
-                    ->whereYear('movimientos.created_at', '=', $this->year);
-            })
+        $payments = Payment::where(function ($query) {
+            $query->whereMonth('movimientos.created_at', '=', $this->month)
+                ->whereYear('movimientos.created_at', '=', $this->year);
+        })
             ->get();
 
-        $presupuestoCategorias = Payment::where('tipo_egreso', 0)
+        $sumPresupuesto = Payment::where('tipo_egreso', 0)
             ->where(function ($query) {
                 $query->whereMonth('movimientos.created_at', '=', $this->month)
                     ->whereYear('movimientos.created_at', '=', $this->year);
             })
-            ->get();
+            ->sum('cantidad');
 
-        $sumPresupuesto = Payment::selectRaw('SUM(cantidad) as Total')
-            ->where('tipo_egreso', 0)
+
+
+        $sumGastos = Payment::where('tipo_egreso', 1)
             ->where(function ($query) {
                 $query->whereMonth('movimientos.created_at', '=', $this->month)
                     ->whereYear('movimientos.created_at', '=', $this->year);
             })
-            ->get();
+            ->sum('cantidad');
+
+
+
+
         return view(
             'livewire.presupuesto',
-            compact('payments', 'presupuestoCategorias', 'categories', 'sumPresupuesto')
+            compact('payments', 'categories', 'sumPresupuesto', 'sumGastos')
         )
             ->extends('layouts.app', [
                 'class' => 'off-canvas-sidebar',

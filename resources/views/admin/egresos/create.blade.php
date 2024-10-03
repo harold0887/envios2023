@@ -10,10 +10,10 @@
 
 @section('content')
 
-<div class="container-fluid  p-0 ">
+<div class="container">
 
     <div class="content-main ">
-      
+
 
         <div class="row">
             <div class="col-12">
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-     
+
 
     </div>
 

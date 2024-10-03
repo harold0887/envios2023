@@ -9,122 +9,64 @@ use Livewire\WithPagination;
 
 class Egresos extends Component
 {
-    public $year = '';
-    public $month = '';
-    public $mesEsp = '';
+
 
     use WithPagination;
-    public $search = '';
+
     protected $paginationTheme = 'bootstrap';
     public $sortDirection = 'desc';
     public $sortField = 'created_at';
 
+
+    public $filters = [
+        'month' => '',
+        'year' => '',
+        'category' => '',
+    ];
+
     public function mount()
     {
-        $this->month = date("m");
-        $this->mesEsp = date("m");
-        $this->year = date("Y");
+        $this->filters['month'] = date("m");
+        $this->filters['year'] = date("Y");
     }
     public function render()
     {
-        switch ($this->month) {
-            case 1:
-                $this->mesEsp = 'Enero';
-                break;
-            case 2:
-                $this->mesEsp = 'Febrero';
-                break;
-            case 3:
-                $this->mesEsp = 'Marzo';
-                break;
-            case 4:
-                $this->mesEsp = 'Abril';
-                break;
-            case 5:
-                $this->mesEsp = 'Mayo';
-                break;
-            case 6:
-                $this->mesEsp = 'Junio';
-                break;
-            case 7:
-                $this->mesEsp = 'Julio';
-                break;
-            case 8:
-                $this->mesEsp = 'Agosto';
-                break;
-            case 9:
-                $this->mesEsp = 'Septiembre';
-                break;
-            case 10:
-                $this->mesEsp = 'Octubre';
-                break;
-            case 11:
-                $this->mesEsp = 'Noviembre';
-                break;
-            case 12:
-                $this->mesEspañol = 'Diciembre';
-                break;
-            default:
 
-                break;
-        }
         $categories = Category::orderBY('name', 'asc')->get();
-        $payments = Payment::join('categories', 'movimientos.categories_id', 'categories.id')
-            ->where('tipo_egreso', 1)
-            ->where(function ($query) {
-                $query->whereMonth('movimientos.created_at', '=', $this->month)
-                    ->whereYear('movimientos.created_at', '=', $this->year);
-            })
-            ->select('movimientos.*', 'categories.name as category')
-            ->orderBy('movimientos.created_at', 'asc')
-            ->get();
 
-        $presupuesto = Payment::selectRaw('SUM(cantidad) as Total')
-            ->where('tipo_egreso', 0)
-            ->where(function ($query) {
-                $query->whereMonth('movimientos.created_at', '=', $this->month)
-                    ->whereYear('movimientos.created_at', '=', $this->year);
-            })
-            ->get();
-
-        $egresos = Payment::selectRaw('SUM(cantidad) as Total')
-            ->where('tipo_egreso', 1)
-            ->where(function ($query) {
-                $query->whereMonth('movimientos.created_at', '=', $this->month)
-                    ->whereYear('movimientos.created_at', '=', $this->year);
-            })->get();
-
-        $presupuestoCategorias = Payment::where('tipo_egreso', 0)
-            ->where(function ($query) {
-                $query->whereMonth('movimientos.created_at', '=', $this->month)
-                    ->whereYear('movimientos.created_at', '=', $this->year);
-            })->get();
-
-
-        $gastos = Payment::whereMonth('movimientos.created_at', '=', $this->month)
-            ->whereYear('movimientos.created_at', '=', $this->year)
-            ->where('tipo_egreso', 1)
+        $gastos = Payment::filter($this->filters)
             ->orderBy($this->sortField, $this->sortDirection)
+            ->where('tipo_egreso', 1)
             ->get();
 
+        $presupuesto = Payment::filter($this->filters)
+            ->where('tipo_egreso', 0)
+            ->sum('cantidad');
 
 
+        $egresos = Payment::filter($this->filters)
+            ->where('tipo_egreso', 1)
+            ->sum('cantidad');
 
-        return view('livewire.egresos', compact('categories', 'payments', 'presupuesto', 'egresos', 'presupuestoCategorias', 'gastos'));
+        return view('livewire.egresos', compact('categories', 'presupuesto', 'egresos', 'gastos'));
     }
 
-
-    public function setMont($month)
+    public function clear()
     {
-        $this->emit('prueba');
+        $this->filters['category'] = '';
     }
-
-
-    public function clearFilters()
+    public function clearYear()
     {
-        $this->month = date("m");
-        $this->year = date("Y");
+        $this->filters['year'] = date("Y");
     }
+
+    public function clearMonth()
+    {
+        $this->filters['month'] = date("m");
+    }
+
+
+
     //sort
     public function setSort($field)
     {

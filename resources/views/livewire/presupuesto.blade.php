@@ -75,6 +75,7 @@
                                     <small class="text-danger"> {{ $message }} </small>
                                     @enderror
                                 </div>
+
                             </div>
 
                             <div class="col-12 text-center mt-5">
@@ -94,27 +95,33 @@
                                         <th><b>Categoria</b></th>
                                         <th><b>Descripcion</b></th>
                                         <th class="text-end"><b>Presupuesto</b></th>
+                                        <th class="text-end"><b>Gastado</b></th>
+                                        <th class="text-end"><b>Disponible</b></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($categories as $category )
-                                    @foreach($payments as $payment )
+                                    @foreach($categories as $category)
+                                    <div>
+                                        @foreach($payments as $payment )
+                                        @if($payment->category->id==$category->id && $payment->tipo_egreso==1)
+                                        @php
+                                        $category->totalGastado=$category->totalGastado+$payment->cantidad
+                                        @endphp
+                                        @endif
+                                        @endforeach
+                                    </div>
+                                    <div>
+                                        @foreach($payments as $payment )
+                                        @if($payment->category->id==$category->id && $payment->tipo_egreso==0)
+                                        @php
+                                        $category->totalPresupuesto=$category->totalPresupuesto+$payment->cantidad
+                                        @endphp
+                                        @endif
+                                        @endforeach
 
-                                    @if($payment->categories_idcategories==$category->id)
-                                    @php
-                                    $category->totalGastado=$category->totalGastado+$payment->cantidad
-                                    @endphp
-                                    @endif
-                                    @endforeach
-                                    @foreach($presupuestoCategorias as $item )
-                                    @if($item->categories_id==$category->id)
-                                    @php
-                                    $category->totalPresupuesto=$category->totalPresupuesto+$item->cantidad
-                                    @endphp
-                                    @endif
-                                    @endforeach
-                                    <tr class="font-weight-bold">
-                                        <td class="text-start" style="padding:0px !important">
+                                    </div>
+                                    <tr class="">
+                                        <td class="text-start font-weight-bold" style="padding:0px !important">
                                             <a class="nav-link text-dark cursor-default ">
                                                 <i class="material-icons">{{$category->icon}}</i>
                                                 {{$category->name}}
@@ -125,6 +132,8 @@
                                         </td>
 
                                         <td class="text-end">{{ number_format( $category->totalPresupuesto,2)}} </td>
+                                        <td class="text-end">{{ number_format( $category->totalGastado,2)}} </td>
+                                        <td class="text-end {{$category->totalPresupuesto>=$category->totalGastado? '':'text-danger' }} ">{{ number_format( $category->totalPresupuesto-$category->totalGastado,2)   }} </td>
                                     </tr>
                                     @endforeach
                                     <tr>
@@ -135,7 +144,9 @@
                                             </a>
                                         </td>
                                         <td></td>
-                                        <td class="text-end">{{number_format($sumPresupuesto[0]->Total,2)}}</td>
+                                        <td class="text-end">{{number_format($sumPresupuesto,2)}}</td>
+                                        <td class="text-end">{{number_format($sumGastos,2)}}</td>
+                                        <td class="text-end {{$sumPresupuesto >=$sumGastos ? '':'text-danger' }} ">{{number_format($sumPresupuesto-$sumGastos,2)}}</td>
                                     </tr>
                                 </tbody>
                             </table>
